@@ -117,7 +117,8 @@ LOWER_UUID = r"[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"  # 
 #   attested   fields the platform itself generates and the verification covers;
 #              cited as "observed" when the event is verified, else "asserted"
 #   json       string fields that must parse as a JSON object
-#   state      where a state change (from -> to) is read, and the states it may take
+#   state      where a state change (from -> to) is read, the states it may take, and (Jira) the
+#              status snapshot every event carries
 #   thread     Graph thread headers (sender-controlled) used to spot forwards and replies
 #   retry      a transport header that marks a redelivery
 # ---------------------------------------------------------------------------
@@ -152,8 +153,9 @@ CONNECTORS = {
         "pii": ("payload.body.user.displayName", "payload.body.user.emailAddress",
                 "payload.body.comment.author.displayName"),
         "signed": ("payload.body",),
-        "attested": ("payload.body.timestamp", "payload.body.changelog"),
-        "state": {"items": "payload.body.changelog.items", "refs": ("payload.body.changelog",), "known": JIRA_STATES},
+        "attested": ("payload.body.timestamp", "payload.body.changelog", "payload.body.issue.fields.status.name"),
+        "state": {"items": "payload.body.changelog.items", "snapshot": "payload.body.issue.fields.status.name",
+                  "refs": ("payload.body.changelog", "payload.body.issue.fields.status.name"), "known": JIRA_STATES},
         "retry": "payload.headers.X-Atlassian-Webhook-Retry",
     },
     "zendesk": {
@@ -215,12 +217,13 @@ SECRET_PATTERNS = tuple((kind, re.compile(pattern)) for kind, pattern in (
     ("jwt", r"\beyJ[A-Za-z0-9_-]{8,}\.[A-Za-z0-9_-]{8,}\.[A-Za-z0-9_-]{8,}"),
     # "AKIA" + 16 uppercase letters/digits (AWS access key ID shape). No: AKIA plus 15 characters.
     ("aws_key_id", r"\bAKIA[0-9A-Z]{16}\b"),
-    # scheme://user:password@ . Yes: postgres://app:pw@db. No: https://host:5432/x (no "@").
-    ("url_credentials", r"\b[a-z][a-z0-9+.-]*://[^\s:/@]+:[^\s@/]+@"),
+    # scheme://user:password@, each run length-capped so a huge field cannot make matching quadratic.
+    # Yes: postgres://app:pw@db. No: https://host:5432/x (no "@").
+    ("url_credentials", r"\b[a-z][a-z0-9+.-]{0,31}://[^\s:/@]{1,256}:[^\s@/]{1,256}@"),
 ))
 PII_PATTERNS = tuple((kind, re.compile(pattern)) for kind, pattern in (
-    # local@domain.tld. Yes: farah@inbox-mail.example. No: farah@localhost (no dot-TLD).
-    ("email", r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b"),
+    # local@domain.tld, with RFC length caps. Yes: farah@inbox-mail.example. No: farah@localhost (no dot-TLD).
+    ("email", r"\b[A-Za-z0-9._%+-]{1,64}@[A-Za-z0-9.-]{1,253}\.[A-Za-z]{2,63}\b"),
     # +country code then three digit groups, not glued to other word characters. Yes: +92 321 0005678. No: 0321 0005678 (no "+").
     ("phone", r"(?<![\w-])\+\d{1,3}[\s-]?\d{3}[\s-]?\d{3,4}[\s-]?\d{3,4}(?![\w-])"),
     # 17 VIN characters (I, O and Q are never used). Yes: 1HGBH41JXMN109186. No: a 17-character run containing an O.
@@ -245,7 +248,7 @@ BULK_DATA = re.compile(r"(?i)\b(all|every|full|entire|complete)\b.{0,30}"
 # A send/export verb, then (same sentence, within 80 chars) "to" and an address; group 1 is the domain.
 # Yes: "Export all customers ... to x@outside.example". No: "To: Service Ops <ops@airosea.example>" (no verb).
 SEND_TO = re.compile(r"(?i)\b(?:export|send|forward|e-?mail|upload|transfer|share)\b[^.\n]{0,80}?"
-                     r"\bto\s+<?[A-Za-z0-9._%+-]+@([A-Za-z0-9.-]+\.[A-Za-z]{2,})")
+                     r"\bto\s+<?[A-Za-z0-9._%+-]{1,64}@([A-Za-z0-9.-]{1,253}\.[A-Za-z]{2,63})")
 # A fleet or infrastructure action verb aimed (within 40 chars) at vehicles or systems.
 # Yes: "push immediate OTA rollback to all Strata vehicles". No: "OTA 4.2.1 stuck at 'downloading' on Strata trims".
 FLEET_ACTION = re.compile(r"(?i)\b(push|roll ?back|fail ?over|run|execute|deploy)\b.{0,40}?"
@@ -273,6 +276,21 @@ def parse_json_object(text):
     return value if isinstance(value, dict) else None
 
 
+def json_strings(node):
+    """Every key and string value inside parsed JSON, walked with a stack rather than recursion."""
+    out, stack = [], [node]
+    while stack:
+        node = stack.pop()
+        if isinstance(node, dict):
+            out.extend(node)
+            stack.extend(node.values())
+        elif isinstance(node, list):
+            stack.extend(node)
+        elif isinstance(node, str):
+            out.append(node)
+    return out
+
+
 def locate(root, path):
     """Find where `path` points inside `root`: return (container, key), or None if a step is missing.
 
@@ -281,6 +299,7 @@ def locate(root, path):
       key[name=X]  the first item named X (case-insensitive) in a list of {"name", "value"} items
       key#sub      parse the string at key as JSON, then look up sub
     List positions are not supported on purpose, so refs stay valid when items are reordered.
+    The key in the returned pair may itself be absent; resolve() then gives None.
     """
     node, steps = root, path.split(".")
     for i, step in enumerate(steps):
@@ -344,11 +363,11 @@ def parse_time(value, fmt):
         if not isinstance(value, str):
             return None
         parsed = parsedate_to_datetime(value) if fmt == "rfc2822" else datetime.fromisoformat(value)
+        if parsed.tzinfo is None:  # includes RFC 2822 "-0000", which means "zone unknown"
+            return None
+        return parsed.astimezone(timezone.utc)  # inside the try: year 9999 at -05:00 overflows
     except (ValueError, TypeError, IndexError, OverflowError):
         return None
-    if parsed.tzinfo is None:  # includes RFC 2822 "-0000", which means "zone unknown"
-        return None
-    return parsed.astimezone(timezone.utc)
 
 
 def safe_case_id(case):
@@ -429,7 +448,7 @@ def extract_event(event):
         "envelope_time": parse_time(event["occurred_at"], "iso"),
         "envelope_time_invalid": event["occurred_at"] is not None and parse_time(event["occurred_at"], "iso") is None,
         "payload_ok": False, "time": None, "time_state": "missing", "source_id": None, "id_state": "missing",
-        "hash": None, "state": None, "state_ok": False, "state_refs": [], "retry_ref": None, "thread": None,
+        "hash": None, "state": None, "state_ok": False, "snapshot": None, "state_refs": [], "retry_ref": None, "thread": None,
         "cite": {}, "texts": {}, "norm": {}, "sends_outside": {}, "terms": set(), "pii": [], "other": [],
     }
     trusted = verified and method_ok
@@ -474,12 +493,22 @@ def extract_declared(event, row, fact, cite, declared):
         fact["source_id"] = raw_id if valid else None
         fact["id_state"] = "ok" if valid else "untrusted"
 
-    signed = [[path, resolve(event, path)] for path in row["signed"]]
-    fact["hash"] = hashlib.sha256(json.dumps(signed, sort_keys=True).encode()).hexdigest()
+    # Dedupe fingerprint: the signed fields plus the declared time, free text and personal-data fields.
+    # A redelivery repeats all of them; an update to the same record (a Salesforce case edit, a mail
+    # re-sent from another address) changes at least one. Transport metadata stays out.
+    hashed = dict.fromkeys((*row["signed"], time_path, *row["free_text"], *row["pii"]))
+    try:
+        signed = json.dumps([[path, resolve(event, path)] for path in hashed], sort_keys=True)
+        fact["hash"] = hashlib.sha256(signed.encode()).hexdigest()
+    except RecursionError:  # content nested too deeply to fingerprint is treated as unparseable
+        fact["payload_ok"] = False
 
     for path in row["free_text"]:
         text = resolve(event, path)
         if isinstance(text, str):  # last place raw free text is read; sanitize() and the checks use these copies
+            decoded = parse_json_object(text) if path in row.get("json", ()) else None
+            if decoded is not None:  # also scan what a consumer reads: JSON "v\u0065hicles" is "vehicles"
+                text = "\n".join([text, *json_strings(decoded)])
             fact["texts"][path] = text
             fact["norm"][path] = normalise(text)
             fact["sends_outside"][path] = sends_outside(fact["norm"][path])  # before any address is masked
@@ -497,10 +526,10 @@ def extract_declared(event, row, fact, cite, declared):
             items = items if isinstance(items, list) else []
             status = next((item for item in items if isinstance(item, dict) and item.get("field") == "status"), None)
             change = (status.get("fromString"), status.get("toString")) if status else None
-        else:
+        else:  # every alarm notification is a state change, so missing values are a conflict, not "no change"
             change = (resolve(event, state["from"]), resolve(event, state["to"]))
-            change = None if change == (None, None) else change
         fact["state"] = change
+        fact["snapshot"] = resolve(event, state["snapshot"]) if "snapshot" in state else None
         fact["state_ok"] = change is not None and all(value in state["known"] for value in change)
         for path in state["refs"]:
             cite(path)
@@ -523,7 +552,11 @@ def extract_declared(event, row, fact, cite, declared):
 
 
 def mark_declared(event, path, declared):
-    """Remember where a free-text or PII field lives, so the generic secret scan skips it (no double entries)."""
+    """Remember where a free-text or PII field lives, so the generic secret scan does not report it again.
+
+    A field inside a JSON string (the SNS Message) cannot be skipped this way: the whole string is
+    still scanned, so a secret there is also reported against the section ("e1:payload").
+    """
     found = locate(event, path)
     if found is not None:
         declared.add((id(found[0]), found[1]))
@@ -545,21 +578,27 @@ def other_strings(event, ref, declared):
     return out
 
 
-def walk_strings(node, section, declared, out):
-    """Collect (section, string) for every dict key and string value below `node`, skipping declared fields."""
-    if isinstance(node, dict):
-        out.extend((section, key) for key in node if isinstance(key, str))
-        pairs = node.items()
-    elif isinstance(node, list):
-        pairs = enumerate(node)
-    else:
-        return
-    for slot, value in pairs:
-        if isinstance(value, str):
-            if (id(node), slot) not in declared:
-                out.append((section, value))
+def walk_strings(root, section, declared, out):
+    """Collect (section, string) for every dict key and string value below `root`, skipping declared fields.
+
+    Uses a stack rather than recursion, so a deeply nested payload cannot exhaust the recursion limit.
+    """
+    stack = [root]
+    while stack:
+        node = stack.pop()
+        if isinstance(node, dict):
+            out.extend((section, key) for key in node if isinstance(key, str))
+            pairs = node.items()
+        elif isinstance(node, list):
+            pairs = enumerate(node)
         else:
-            walk_strings(value, section, declared, out)
+            continue
+        for slot, value in pairs:
+            if isinstance(value, str):
+                if (id(node), slot) not in declared:
+                    out.append((section, value))
+            else:
+                stack.append(value)
 
 # ---------------------------------------------------------------------------
 # 2. sanitize: where must something be masked?
@@ -612,7 +651,7 @@ def check_envelope(ctx):
 
 
 def check_provenance(ctx):
-    """Every provenance and timing defect of every event, not just the first (AIR-08 lists five)."""
+    """Every provenance and timing defect of every event, not just the first (AIR-08 has four of them)."""
     out = []
     for fact in ctx["events"]:
         cite, row = fact["cite"], fact["row"]
@@ -678,21 +717,29 @@ def check_stale_state(ctx):
     state, the chain is consistent: the current state is the newest new state, and any event that
     arrived after a newer one is stale and ignored. A broken chain, an unknown state, or two
     different changes at the same time is a TIMELINE_CONFLICT and leaves the state unconfirmed.
-    Identical changes (a redelivery) collapse into one.
+    Identical changes (a redelivery) collapse into one. A change whose time is after its own receipt
+    cannot be placed, and a newer event whose status snapshot disagrees with the chain (a Jira
+    priority edit made after a reopen we never received) means a change is missing: both conflict.
     """
     changes = [fact for fact in ctx["events"] if fact["state"] is not None]
     if not changes:
         return []
     refs = [ref for fact in changes for ref in fact["state_refs"]]
     conflict = [finding("TIMELINE_CONFLICT", refs)]
-    if any(not fact["state_ok"] or fact["time"] is None for fact in changes):
+    if any(not fact["state_ok"] or fact["time"] is None
+           or (fact["received"] is not None and fact["time"] - fact["received"] > CLOCK_SKEW_LIMIT)
+           for fact in changes):
         return conflict
     chain = sorted({(fact["time"], fact["state"]) for fact in changes})
     if len({time for time, _ in chain}) != len(chain):
         return conflict
     if any(later[1][0] != earlier[1][1] for earlier, later in zip(chain, chain[1:])):
         return conflict
-    current = chain[-1][1][1]
+    current, newest = chain[-1][1][1], chain[-1][0]
+    disagree = [fact for fact in ctx["events"] if fact["snapshot"] is not None and fact["time"] is not None
+                and fact["time"] >= newest and fact["snapshot"] != current]
+    if disagree:
+        return [finding("TIMELINE_CONFLICT", refs + [ref for fact in disagree for ref in fact["state_refs"]])]
     ctx["observed_state"] = current
     stale = [old for old in changes if any(
         new["time"] > old["time"] and old["received"] and new["received"] and old["received"] > new["received"]
@@ -704,12 +751,12 @@ def check_stale_state(ctx):
 
 
 def check_duplicates(ctx):
-    """Deduplicate only on proof (AIR-06), and only claim a thread relation for forwards (AIR-02).
+    """Deduplicate only on proof (AIR-06), and only claim a thread relation for forwards and replies (AIR-02).
 
     Same connector, identity, source ID and signed-field hash: DUPLICATE_DELIVERY. Same source ID but
     a different hash: ID_COLLISION, and nothing in that group is deduplicated. Different IDs in the
     same Graph conversation where one conversationIndex extends the other: THREAD_RELATION_ASSERTED,
-    plus NEW_INFORMATION when the child's uniqueBody is not already in the parent's body.
+    plus NEW_INFORMATION unless the child's uniqueBody is provably already in the parent's body.
     """
     out, groups = [], {}
     for fact in ctx["events"]:
@@ -738,7 +785,7 @@ def check_duplicates(ctx):
         out.append(finding("THREAD_RELATION_ASSERTED", [fact["cite"].get(path) for fact in (parent, child)
                                                         for path in (thread["id"], thread["index"], parent["row"]["id"][0])]))
         new_text, full_text = child["norm"].get(thread["new_text"]), parent["norm"].get(thread["full_text"])
-        if new_text is not None and full_text is not None and " ".join(new_text.split()) not in " ".join(full_text.split()):
+        if new_text is None or full_text is None or " ".join(new_text.split()) not in " ".join(full_text.split()):
             out.append(finding("NEW_INFORMATION", [child["cite"].get(thread["new_text"])]))
     return out
 
@@ -862,8 +909,9 @@ def ref_ok(case, item, kinds):
 def final_guard(case, record):
     """Re-check the finished record; if anything is off, replace it with a minimal QUARANTINE record.
 
-    Every string must be a constant, a resolvable ref or a validated typed value, and no secret
-    pattern may match the serialised record. The replacement keeps the valid redaction entries.
+    Every string must be a constant, a resolvable ref or a validated typed value; the disposition,
+    actions and review flag must be what the reason codes imply; and no secret pattern may match the
+    serialised record. The replacement keeps the valid redaction entries.
     """
     redaction_kinds = PII_KINDS | SECRET_KINDS
     codes = record.get("reason_codes")
@@ -874,8 +922,11 @@ def final_guard(case, record):
           and record["disposition"] in DISPOSITIONS
           and isinstance(codes, list) and all(code in REASONS for code in codes) and codes == sorted(set(codes))
           and record["notes_on_uncertainty"] == [REASONS[code][2] for code in codes]
-          and all(action in ACTIONS for action in actions) and len(set(actions)) == len(actions)
-          and isinstance(record["human_review_required"], bool)
+          and all(action in ACTIONS for action in actions) and actions == sorted(set(actions), key=ACTIONS.index)
+          # consistency: disposition, actions and review flag must be what the reason codes imply
+          and record["disposition"] == max((REASONS[code][0] for code in codes), key=DISPOSITIONS.index, default="ACCEPT")
+          and (record["disposition"] != "QUARANTINE" or actions == [BASE_ACTION["QUARANTINE"]])
+          and record["human_review_required"] is (record["disposition"] != "ACCEPT" or "STALE_STATE_IGNORED" in codes)
           and record["observed_state"] in (None, *JIRA_STATES, *SNS_STATES)
           and isinstance(record["summary"], str) and SUMMARY.fullmatch(record["summary"]) is not None
           and all(ref_ok(case, item, ("observed", "asserted")) for item in record["evidence_refs"])
@@ -900,10 +951,10 @@ def decide(case):
     Logs only the case ID, check names, reason codes and exception type names. Never values or
     str(exception), because exception messages can echo input, including secrets.
     """
-    case_id = safe_case_id(case)
+    case_id, redactions = safe_case_id(case), []
     try:
         ctx = extract(case)
-        ctx["redactions"] = sanitize(ctx)
+        ctx["redactions"] = redactions = sanitize(ctx)
         findings = []
         for check in GATE_CHECKS:
             findings += run_check(check, ctx)
@@ -916,7 +967,7 @@ def decide(case):
         record = final_guard(case, combine(ctx, findings, analysed))
     except Exception as error:  # fail closed, but never hide it: tests treat POLICY_ERROR as a failure
         log.warning("case=%s policy_error=%s", case_id, type(error).__name__)
-        return minimal_record(case_id, "POLICY_ERROR", [])
+        return minimal_record(case_id, "POLICY_ERROR", redactions)  # keeps any redactions already found
     log.info("case=%s disposition=%s codes=%s", case_id, record["disposition"], ",".join(record["reason_codes"]))
     return record
 
@@ -927,12 +978,12 @@ def main(argv):
         print("usage: python3 policy.py fixtures/events.jsonl", file=sys.stderr)
         return 2
     decisions = []
-    with open(argv[1], encoding="utf-8") as lines:
+    with open(argv[1], encoding="utf-8", errors="replace") as lines:  # a bad byte must not stop the run
         for line in lines:
             if line.strip():
                 try:
                     case = json.loads(line)
-                except ValueError:
+                except (ValueError, RecursionError):
                     case = None  # an unreadable line still gets a QUARANTINE decision
                 decisions.append(decide(case))
     for decision in sorted(decisions, key=lambda item: item["case_id"]):  # stable: equal IDs keep file order

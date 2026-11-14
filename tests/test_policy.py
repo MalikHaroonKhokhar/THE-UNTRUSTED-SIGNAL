@@ -16,7 +16,7 @@ from tests.helpers import CASES, EXPECTED, check
 
 class FixtureCases(unittest.TestCase):
     def test_each_case_matches_expected(self):
-        """All eight cases give their expected decision and pass every harness check (all four invariants)."""
+        """All eight cases give their expected decision and pass every check() rule (shape, refs, evidence kinds, summary, state oracle)."""
         for case_id, case in CASES.items():
             with self.subTest(case_id):
                 self.assertEqual(check(case, policy.decide(case), EXPECTED[case_id]), [])

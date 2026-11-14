@@ -28,6 +28,7 @@ def hand_written_air06(observed_state):
     """AIR-06's expected decision written out by hand as a policy output, with a chosen observed_state."""
     decision = {key: EXPECTED["AIR-06"].get(key) for key in OUTPUT_KEYS}
     decision["case_id"] = "AIR-06"
+    decision["evidence_refs"] = sorted(decision["evidence_refs"], key=lambda item: (item["ref"], item["kind"]))
     decision["summary"] = "ACCEPT for 3 event(s) from cloudwatch_sns."
     decision["observed_state"] = observed_state
     return decision

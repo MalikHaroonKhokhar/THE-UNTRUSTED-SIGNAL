@@ -1,7 +1,9 @@
 """Fixture coverage, output shape and determinism."""
+import json
 import os
 import subprocess
 import sys
+import tempfile
 import unittest
 
 import policy
@@ -32,6 +34,18 @@ class Contract(unittest.TestCase):
         self.assertEqual(runs[0], runs[1])
         self.assertEqual(len(runs[0].splitlines()), len(CASE_IDS))
         self.assertNotIn(b"POLICY_ERROR", runs[0])
+
+    def test_cli_survives_unreadable_lines(self):
+        """Fail closed: an absurdly nested line and a non-UTF-8 line each get a QUARANTINE decision; the other cases still run."""
+        with tempfile.TemporaryDirectory() as folder:
+            path = os.path.join(folder, "events.jsonl")
+            with open(os.path.join(ROOT, "fixtures", "events.jsonl"), "rb") as source, open(path, "wb") as target:
+                target.write(source.read() + b"[" * 200000 + b"\n" + b'{"case_id": "AIR-99\xff"}\n')
+            run = subprocess.run([sys.executable, "policy.py", path], cwd=ROOT, check=True, capture_output=True)
+        decisions = [json.loads(line) for line in run.stdout.splitlines()]
+        self.assertEqual([item["case_id"] for item in decisions], CASE_IDS + ["UNKNOWN", "UNKNOWN"])
+        for item in decisions[-2:]:
+            self.assertEqual((item["disposition"], item["reason_codes"]), ("QUARANTINE", ["MALFORMED_ENVELOPE"]))
 
 
 if __name__ == "__main__":
