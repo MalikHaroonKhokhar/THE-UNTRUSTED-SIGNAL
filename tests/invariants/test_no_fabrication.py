@@ -52,6 +52,7 @@ class NoFabrication(unittest.TestCase):
     def test_conflicting_event_times_are_flagged(self):
         """Invariant 2: when the adapter's occurred_at disagrees with the payload's event time, the conflict is reported, not resolved."""
         def mutate(item):
+            """Move the adapter's occurred_at one hour away from the payload's event time."""
             if item["occurred_at"] is None:
                 return False
             item["occurred_at"] = shifted(item["occurred_at"], 1)
@@ -60,6 +61,7 @@ class NoFabrication(unittest.TestCase):
     def test_event_time_after_receipt_is_flagged(self):
         """Invariant 2: an event time more than five minutes after its receipt time is reported as CLOCK_SKEW."""
         def mutate(item):
+            """Record receipt one hour before the event time."""
             if item["occurred_at"] is None:
                 return False
             item["received_at"] = shifted(item["occurred_at"], -1)
@@ -68,6 +70,7 @@ class NoFabrication(unittest.TestCase):
     def test_unverified_event_is_never_cited_as_observed(self):
         """Invariant 2: once an event's verification is false, none of its payload fields is cited as observed evidence."""
         def mutate(item):
+            """Mark a verified event as unverified."""
             if item["provenance"]["verified"] is not True:
                 return False  # already unverified (AIR-08)
             item["provenance"]["verified"] = False

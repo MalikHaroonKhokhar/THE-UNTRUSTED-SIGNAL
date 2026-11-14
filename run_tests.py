@@ -15,26 +15,32 @@ class CountingResult(unittest.TextTestResult):
     """A test result that remembers which test methods failed or skipped, once per method."""
 
     def __init__(self, *args, **kwargs):
+        """Start with no failed or skipped methods."""
         super().__init__(*args, **kwargs)
         self.failed_ids, self.skipped_ids = set(), set()
 
     def addFailure(self, test, err):
+        """A failed assertion fails its method."""
         super().addFailure(test, err)
         self.failed_ids.add(test.id())
 
     def addError(self, test, err):
+        """An exception, including an import error, fails its method."""
         super().addError(test, err)
         self.failed_ids.add(test.id())
 
     def addUnexpectedSuccess(self, test):
+        """A test marked as expected to fail that passed is broken, so it counts as a failure."""
         super().addUnexpectedSuccess(test)
         self.failed_ids.add(test.id())
 
     def addSkip(self, test, reason):
+        """Remember the skipped method once, even when only one of its subTests skipped."""
         super().addSkip(test, reason)
         self.skipped_ids.add(getattr(test, "test_case", test).id())  # a skipped subTest belongs to its method
 
     def addSubTest(self, test, subtest, err):
+        """A failing subTest fails its whole method, counted once."""
         super().addSubTest(test, subtest, err)
         if err is not None:
             self.failed_ids.add(test.id())

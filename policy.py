@@ -211,14 +211,15 @@ CONNECTORS = {
 SECRET_PATTERNS = tuple((kind, re.compile(pattern)) for kind, pattern in (
     # "kpfake_" + live|test + "_" + 8 or more letters/digits. Yes: kpfake_live_8Hq2ZtR4. No: kpfake_demo_8Hq2ZtR4.
     ("api_key", r"\bkpfake_(?:live|test)_[A-Za-z0-9]{8,}\b"),
-    # "bearer", whitespace, then 16+ token characters, not a "<placeholder>". Yes: Bearer abcdefghijklmnop12. No: Bearer <token>.
+    # "bearer", whitespace, then 16+ token characters, not a "<placeholder>".
+    # Yes: "Bearer " followed by 16 letters. No: "Bearer <token>".
     ("bearer_token", r"(?i)\bbearer\s+(?!<)[A-Za-z0-9\-._~+/]{16,}=*"),
     # Three base64url parts joined by dots, the first starting "eyJ" (an encoded "{"). No: eyJ.short.parts.
     ("jwt", r"\beyJ[A-Za-z0-9_-]{8,}\.[A-Za-z0-9_-]{8,}\.[A-Za-z0-9_-]{8,}"),
     # "AKIA" + 16 uppercase letters/digits (AWS access key ID shape). No: AKIA plus 15 characters.
     ("aws_key_id", r"\bAKIA[0-9A-Z]{16}\b"),
     # scheme://user:password@, each run length-capped so a huge field cannot make matching quadratic.
-    # Yes: postgres://app:pw@db. No: https://host:5432/x (no "@").
+    # Yes: "postgres://" then "app:pw@db". No: "https://host:5432/x" (no "@").
     ("url_credentials", r"\b[a-z][a-z0-9+.-]{0,31}://[^\s:/@]{1,256}:[^\s@/]{1,256}@"),
 ))
 PII_PATTERNS = tuple((kind, re.compile(pattern)) for kind, pattern in (

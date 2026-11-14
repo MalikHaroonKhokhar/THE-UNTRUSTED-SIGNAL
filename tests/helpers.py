@@ -108,6 +108,7 @@ STATES = ("To Do", "Open", "In Progress", "Resolved", "Reopened", "Closed", "Don
 
 
 def _one_of(words):
+    """Regex alternation matching exactly one of `words`."""
     return "(?:" + "|".join(re.escape(word) for word in words) + ")"
 
 

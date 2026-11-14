@@ -79,6 +79,7 @@ class QuarantineVariants(unittest.TestCase):
     def test_malformed_input_fails_closed(self):
         """Fail closed: malformed envelopes and payloads quarantine with their specific code, never POLICY_ERROR."""
         def mutate(change):
+            """A copy of AIR-02 with `change` applied."""
             case = clone(CASES["AIR-02"])
             change(case)
             return case

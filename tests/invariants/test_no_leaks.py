@@ -10,10 +10,12 @@ from tests.helpers import (CASES, FAKE_KEY, FAKE_PHONE, FREE_TEXT, ID_PATH, PII_
 
 
 def plant_in_id(item):
+    """Put the fake key in the event's declared source-ID field."""
     set_field(item, ID_PATH[item["connector"]], FAKE_KEY)
 
 
 def plant_in_header(item):
+    """Add a header carrying the fake key (a list item for IMAP, a dict entry elsewhere)."""
     headers = item["payload"].setdefault("headers", {})
     if isinstance(headers, list):
         headers.append({"name": "X-Debug-Token", "value": FAKE_KEY})
@@ -22,6 +24,7 @@ def plant_in_header(item):
 
 
 def plant_as_dict_key(item):
+    """Use the fake key as a dict key inside the payload."""
     item["payload"][FAKE_KEY] = "debug"
 
 
