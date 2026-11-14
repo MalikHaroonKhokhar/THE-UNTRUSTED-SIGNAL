@@ -66,18 +66,22 @@ class NoSilentResolve(unittest.TestCase):
         event(mutated, "e2")["provenance"]["source_identity"] = "arn:aws:sns:ap-south-1:111122223333:other-topic"
         self.assertNotIn("DUPLICATE_DELIVERY", decide_checked(self, mutated)["reason_codes"])
 
-    def test_updated_record_with_same_id_is_not_a_duplicate(self):
-        """Invariant 4: a later update of AIR-05's case (same Id and description, new subject and time) is not deduplicated."""
-        mutated = clone(CASES["AIR-05"])
-        update = copy.deepcopy(mutated["events"][0])
-        update["event_ref"] = "e2"
-        update["payload"]["Subject"] = "Escalated: Fleet API sync still failing"
-        update["payload"]["LastModifiedDate"] = update["occurred_at"] = "2026-11-12T09:15:22.000+0000"
-        update["received_at"] = "2026-11-12T09:16:05Z"
-        mutated["events"].append(update)
-        output = decide_checked(self, mutated)
-        self.assertNotIn("DUPLICATE_DELIVERY", output["reason_codes"])
-        self.assertIn("ID_COLLISION", output["reason_codes"])
+    def test_same_id_and_body_with_new_subject_is_a_collision(self):
+        """Invariant 4: the same source ID and body arriving again with only a different subject is an ID_COLLISION, never a duplicate."""
+        subjects = {"AIR-01": "payload.headers[name=Subject]", "AIR-02": "payload.subject", "AIR-05": "payload.Subject"}
+        for case_id, subject_path in subjects.items():
+            for changed in (False, True):
+                with self.subTest(case_id=case_id, subject_changed=changed):
+                    mutated = clone(CASES[case_id])
+                    again = copy.deepcopy(mutated["events"][0])
+                    again["event_ref"] = f"e{len(mutated['events']) + 1}"
+                    again["provenance"]["delivery_attempt"] = 2  # transport metadata: not in the fingerprint
+                    if changed:
+                        set_field(again, subject_path, "Escalated: " + policy.resolve(again, subject_path))
+                    mutated["events"].append(again)
+                    codes = decide_checked(self, mutated)["reason_codes"]
+                    # control (unchanged copy): a proven redelivery; changed subject: a collision, nothing merged
+                    self.assertEqual(("ID_COLLISION" in codes, "DUPLICATE_DELIVERY" in codes), (changed, not changed))
 
     def test_forward_without_unique_body_still_reports_new_information(self):
         """Invariant 4: when a forward's uniqueBody is missing, "nothing new" cannot be shown, so NEW_INFORMATION is still reported."""

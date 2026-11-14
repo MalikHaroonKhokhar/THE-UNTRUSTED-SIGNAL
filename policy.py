@@ -108,19 +108,20 @@ LOWER_UUID = r"[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"  # 
 
 # ---------------------------------------------------------------------------
 # Connector table: one row per connector. Adding a connector is adding a row.
-#   method     the only provenance method accepted for this connector
-#   time       (path, format) of the one field that gives the event time
-#   id         (path, pattern) of the source event ID
-#   free_text  fields that are redacted and scanned for injection
-#   pii        fields masked whole, by name
-#   signed     fields hashed for deduplication (transport metadata excluded)
-#   attested   fields the platform itself generates and the verification covers;
-#              cited as "observed" when the event is verified, else "asserted"
-#   json       string fields that must parse as a JSON object
-#   state      where a state change (from -> to) is read, the states it may take, and (Jira) the
-#              status snapshot every event carries
-#   thread     Graph thread headers (sender-controlled) used to spot forwards and replies
-#   retry      a transport header that marks a redelivery
+#   method       the only provenance method accepted for this connector
+#   time         (path, format) of the one field that gives the event time
+#   id           (path, pattern) of the source event ID
+#   free_text    fields that are redacted and scanned for injection
+#   pii          fields masked whole, by name
+#   fingerprint  content fields for the dedupe fingerprint, on top of the declared time, free text
+#                and personal-data fields; transport metadata is never part of it
+#   attested     fields the platform itself generates and the verification covers;
+#                cited as "observed" when the event is verified, else "asserted"
+#   json         string fields that must parse as a JSON object
+#   state        where a state change (from -> to) is read, the states it may take, and (Jira) the
+#                status snapshot every event carries
+#   thread       Graph thread headers (sender-controlled) used to spot forwards and replies
+#   retry        a transport header that marks a redelivery
 # ---------------------------------------------------------------------------
 
 CONNECTORS = {
@@ -130,7 +131,7 @@ CONNECTORS = {
         "id": ("payload.headers[name=Message-ID]", MESSAGE_ID),
         "free_text": ("payload.headers[name=Subject]", "payload.body"),
         "pii": ("payload.headers[name=From]",),
-        "signed": ("payload.headers[name=Message-ID]", "payload.body"),
+        "fingerprint": ("payload.headers[name=Message-ID]", "payload.body"),
         "attested": (),
     },
     "graph": {
@@ -139,7 +140,7 @@ CONNECTORS = {
         "id": ("payload.internetMessageId", MESSAGE_ID),
         "free_text": ("payload.subject", "payload.body.content", "payload.uniqueBody.content"),
         "pii": ("payload.from.emailAddress.address", "payload.from.emailAddress.name"),
-        "signed": ("payload.internetMessageId", "payload.body.content"),
+        "fingerprint": ("payload.internetMessageId", "payload.body.content"),
         "attested": (),
         "thread": {"id": "payload.conversationId", "index": "payload.conversationIndex",
                    "new_text": "payload.uniqueBody.content", "full_text": "payload.body.content"},
@@ -152,7 +153,7 @@ CONNECTORS = {
                       "payload.body.comment.body"),
         "pii": ("payload.body.user.displayName", "payload.body.user.emailAddress",
                 "payload.body.comment.author.displayName"),
-        "signed": ("payload.body",),
+        "fingerprint": ("payload.body",),
         "attested": ("payload.body.timestamp", "payload.body.changelog", "payload.body.issue.fields.status.name"),
         "state": {"items": "payload.body.changelog.items", "snapshot": "payload.body.issue.fields.status.name",
                   "refs": ("payload.body.changelog", "payload.body.issue.fields.status.name"), "known": JIRA_STATES},
@@ -164,7 +165,7 @@ CONNECTORS = {
         "id": ("payload.ticket.id", r"[0-9]+"),
         "free_text": ("payload.ticket.subject", "payload.ticket.description"),
         "pii": ("payload.requester.name", "payload.requester.email"),
-        "signed": ("payload.ticket",),
+        "fingerprint": ("payload.ticket",),
         "attested": ("payload.ticket.updated_at", "payload.ticket.id"),
     },
     "salesforce": {
@@ -173,7 +174,7 @@ CONNECTORS = {
         "id": ("payload.Id", r"500[A-Za-z0-9]{12}(?:[A-Za-z0-9]{3})?"),  # Case IDs start 500; 15 or 18 chars
         "free_text": ("payload.Subject", "payload.Description"),
         "pii": ("payload.SuppliedName", "payload.SuppliedPhone", "payload.SuppliedEmail"),
-        "signed": ("payload.Id", "payload.Description"),
+        "fingerprint": ("payload.Id", "payload.Description"),
         "attested": ("payload.LastModifiedDate", "payload.Id"),
     },
     "cloudwatch_sns": {
@@ -182,7 +183,7 @@ CONNECTORS = {
         "id": ("payload.body.MessageId", LOWER_UUID),
         "free_text": ("payload.body.Message#AlarmDescription", "payload.body.Message#NewStateReason"),
         "pii": (),
-        "signed": ("payload.body.Message", "payload.body.MessageId", "payload.body.Subject",
+        "fingerprint": ("payload.body.Message", "payload.body.MessageId", "payload.body.Subject",
                    "payload.body.Timestamp", "payload.body.TopicArn", "payload.body.Type"),
         "attested": ("payload.body.Message#StateChangeTime", "payload.body.Message#OldStateValue",
                      "payload.body.Message#NewStateValue", "payload.body.MessageId"),
@@ -197,7 +198,7 @@ CONNECTORS = {
         "id": ("payload.headers.X-Airosea-Delivery", LOWER_UUID),
         "free_text": ("payload.raw_body",),
         "pii": (),
-        "signed": ("payload.raw_body",),
+        "fingerprint": ("payload.raw_body",),
         "attested": (),
         "json": ("payload.raw_body",),
     },
@@ -406,7 +407,7 @@ def extract(case):
     """Turn the raw case into typed facts. This is the only function that reads raw payload values.
 
     Returns ctx = {"case_id", "malformed", "events": [fact, ...]}. A fact holds parsed times, the
-    validated source ID, provenance flags, the signed-field hash, state and thread facts, the refs
+    validated source ID, provenance flags, the content fingerprint, state and thread facts, the refs
     that may be cited, and the free text that sanitize() and the checks scan. Only typed values and
     refs ever move from ctx into the output.
     """
@@ -449,7 +450,7 @@ def extract_event(event):
         "envelope_time": parse_time(event["occurred_at"], "iso"),
         "envelope_time_invalid": event["occurred_at"] is not None and parse_time(event["occurred_at"], "iso") is None,
         "payload_ok": False, "time": None, "time_state": "missing", "source_id": None, "id_state": "missing",
-        "hash": None, "state": None, "state_ok": False, "snapshot": None, "state_refs": [], "retry_ref": None, "thread": None,
+        "fingerprint": None, "state": None, "state_ok": False, "snapshot": None, "state_refs": [], "retry_ref": None, "thread": None,
         "cite": {}, "texts": {}, "norm": {}, "sends_outside": {}, "terms": set(), "pii": [], "other": [],
     }
     trusted = verified and method_ok
@@ -494,13 +495,14 @@ def extract_declared(event, row, fact, cite, declared):
         fact["source_id"] = raw_id if valid else None
         fact["id_state"] = "ok" if valid else "untrusted"
 
-    # Dedupe fingerprint: the signed fields plus the declared time, free text and personal-data fields.
-    # A redelivery repeats all of them; an update to the same record (a Salesforce case edit, a mail
-    # re-sent from another address) changes at least one. Transport metadata stays out.
-    hashed = dict.fromkeys((*row["signed"], time_path, *row["free_text"], *row["pii"]))
+    # Content fingerprint for deduplication: the row's fingerprint fields plus the declared time, free
+    # text and personal-data fields. It covers content only, never transport metadata (receipt time,
+    # delivery count, transport headers), so a true redelivery matches while an update to the same
+    # record (a Salesforce case edit, the same Message-ID with a new subject or sender) does not.
+    content = dict.fromkeys((*row["fingerprint"], time_path, *row["free_text"], *row["pii"]))
     try:
-        signed = json.dumps([[path, resolve(event, path)] for path in hashed], sort_keys=True)
-        fact["hash"] = hashlib.sha256(signed.encode()).hexdigest()
+        canonical = json.dumps([[path, resolve(event, path)] for path in content], sort_keys=True)
+        fact["fingerprint"] = hashlib.sha256(canonical.encode()).hexdigest()
     except RecursionError:  # content nested too deeply to fingerprint is treated as unparseable
         fact["payload_ok"] = False
 
@@ -754,9 +756,10 @@ def check_stale_state(ctx):
 def check_duplicates(ctx):
     """Deduplicate only on proof (AIR-06), and only claim a thread relation for forwards and replies (AIR-02).
 
-    Same connector, identity, source ID and signed-field hash: DUPLICATE_DELIVERY. Same source ID but
-    a different hash: ID_COLLISION, and nothing in that group is deduplicated. Different IDs in the
-    same Graph conversation where one conversationIndex extends the other: THREAD_RELATION_ASSERTED,
+    Same connector, identity, source ID and content fingerprint: DUPLICATE_DELIVERY. Same source ID
+    but a different fingerprint: ID_COLLISION, and nothing in that group is deduplicated. Different
+    IDs in the same Graph conversation where one conversationIndex extends the other:
+    THREAD_RELATION_ASSERTED,
     plus NEW_INFORMATION unless the child's uniqueBody is provably already in the parent's body.
     """
     out, groups = [], {}
@@ -768,7 +771,7 @@ def check_duplicates(ctx):
             continue
         id_path = group[0]["row"]["id"][0]
         refs = [fact["cite"].get(id_path) for fact in group]
-        if len({fact["hash"] for fact in group}) > 1:
+        if len({fact["fingerprint"] for fact in group}) > 1:
             out.append(finding("ID_COLLISION", refs))
         elif len({fact["identity"] for fact in group}) == 1:
             out.append(finding("DUPLICATE_DELIVERY", refs))

@@ -68,9 +68,10 @@ FINDINGS.md                      assumptions, limits, rejected instructions, edg
   envelope or provenance quarantines an event, its content is not analysed at all. Any exception becomes
   a QUARANTINE record with `POLICY_ERROR`, which the tests treat as a failure.
 - **Nothing is merged or resolved without proof.** A redelivery is deduplicated only when the sender,
-  the source ID and the content fingerprint all match. The fingerprint covers the signed fields plus
-  the declared time, free text and personal-data fields, never transport metadata. The same ID with
-  different content is an `ID_COLLISION`. The current state comes from event time, never from arrival
+  the source ID and the **content fingerprint** all match. The fingerprint is a hash of content fields
+  only: each connector's fingerprint fields plus its declared event time, free text and personal-data
+  fields. It excludes transport metadata: receipt time, `delivery_attempt` and transport headers. The
+  same ID with any different content, even just a new subject, is an `ID_COLLISION`. The current state comes from event time, never from arrival
   order. A broken chain, a tie, a change dated after its own receipt, or a newer Jira status snapshot
   that disagrees gives a `TIMELINE_CONFLICT`, not a guess.
 - **No raw values out.** One function, `extract()`, reads raw payload data. The summary is a template
@@ -94,9 +95,17 @@ envelope recorded by the adapter and the connector-native `payload`:
  "payload": {"headers": [{"name": "Date", "value": "Fri, 13 Nov 2026 13:41:07 +0500"}, …], "body": "…"}}
 ```
 
-The connector table at the top of `policy.py` says, per connector, which provenance method is accepted,
-which single field gives the event time and the source ID, which fields are free text, personal data or
-signed, and where state changes live. Adding a connector is adding a row.
+`delivery_attempt` is how many times the adapter has received this source event ID. AIR-06's
+redelivered ALARM is 2. A source's own retry count stays in the payload, for example Jira's
+`X-Atlassian-Webhook-Retry` header.
+
+The connector table at the top of `policy.py` says, per connector:
+- which provenance method is accepted;
+- which single field gives the event time, and which gives the source ID;
+- which fields are free text, which are personal data, and which feed the content fingerprint;
+- where state changes live.
+
+Adding a connector is adding a row.
 
 **Evidence refs** are `<event_ref>:<path>`. Path steps are separated by `.`: `key` is a dict lookup,
 `key[name=X]` is the first `{"name", "value"}` item named X (used for email headers), and `key#sub`
@@ -124,6 +133,29 @@ so refs survive reordering. One resolver reads every path, in the policy and in 
 `fixtures/expected.jsonl` holds the same fields plus a `rationale` for people. The tests require an exact
 match on every field except `evidence_refs`, which is a minimum: each expected ref must be cited with the
 same kind, and every cited ref must resolve to a real, non-null field.
+
+## The deliberate negative test
+
+`tests/negative/test_harness_catches_bad.py` hands the harness decisions that are wrong on purpose. The
+same `check()` that passes the real policy must reject them.
+
+**The key one is `test_wrong_air06_state_is_caught`.** It takes AIR-06's expected decision and changes
+`observed_state` to `"OK"`, as if the late OK had closed the active alarm. `check()` returns:
+
+| Input | `check()` returns |
+|---|---|
+| Correct record (`ALARM`), the control | `[]` |
+| Wrong record (`OK`), with the answer key | `["observed_state 'OK' but the newest state change is 'ALARM'", "observed_state differs from expected"]` |
+| Wrong record (`OK`), without the answer key | `["observed_state 'OK' but the newest state change is 'ALARM'"]` |
+
+The last row comes from the harness's independent state oracle alone.
+
+**The same file also checks three broken policies.** An always-ACCEPT policy, an always-QUARANTINE
+policy and an always-crashing policy are each rejected on every case.
+
+These tests *pass* when the harness catches the bad decision, so the suite can still exit 0. To see
+the harness fail a real policy, `docs/red-run.txt` saves the run against a stub policy: PASS 6 /
+FAIL 16.
 
 ## Test output
 
@@ -182,10 +214,10 @@ test_newer_non_status_update_exposes_a_missing_reopen (tests.invariants.test_no_
 Invariant 4: if the reopen arrives only as a later non-status edit, the stale "Resolved" is never shown as current. ... ok
 test_reused_message_id_is_not_deduplicated (tests.invariants.test_no_silent_resolve.NoSilentResolve.test_reused_message_id_is_not_deduplicated)
 Invariant 4: AIR-06's MessageId reused with different content is an ID collision, never a silent duplicate. ... ok
+test_same_id_and_body_with_new_subject_is_a_collision (tests.invariants.test_no_silent_resolve.NoSilentResolve.test_same_id_and_body_with_new_subject_is_a_collision)
+Invariant 4: the same source ID and body arriving again with only a different subject is an ID_COLLISION, never a duplicate. ... ok
 test_same_id_from_another_sender_is_not_deduplicated (tests.invariants.test_no_silent_resolve.NoSilentResolve.test_same_id_from_another_sender_is_not_deduplicated)
 Invariant 4: AIR-06's redelivery arriving under a different source identity is not merged as a duplicate. ... ok
-test_updated_record_with_same_id_is_not_a_duplicate (tests.invariants.test_no_silent_resolve.NoSilentResolve.test_updated_record_with_same_id_is_not_a_duplicate)
-Invariant 4: a later update of AIR-05's case (same Id and description, new subject and time) is not deduplicated. ... ok
 test_always_accept_policy_is_caught (tests.negative.test_harness_catches_bad.HarnessCatchesBad.test_always_accept_policy_is_caught)
 Negative: a policy that always returns ACCEPT produces violations on every case. ... ok
 test_always_crash_policy_is_caught (tests.negative.test_harness_catches_bad.HarnessCatchesBad.test_always_crash_policy_is_caught)
@@ -208,7 +240,7 @@ test_unusual_but_harmless_input_decides_normally (tests.variants.test_quarantine
 Never crash: deep nesting is ignored or quarantined, and a year-9999 email Date is INVALID_TIMESTAMP with redactions kept. ... ok
 
 ----------------------------------------------------------------------
-Ran 38 tests in 0.332s
+Ran 38 tests in 0.325s
 
 OK
 PASS 38 / FAIL 0 / SKIP 0
