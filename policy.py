@@ -329,75 +329,511 @@ def resolve_ref(case, ref):
     return None
 
 
+def parse_time(value, fmt):
+    """Parse a timestamp in the given format into aware UTC; None if invalid or it has no timezone.
+
+    Formats: "iso" (ISO 8601), "rfc2822" (email Date header), "epoch_ms" (13-digit integer).
+    A naive time is rejected rather than guessed: AIR-07 only correlates because the email's
+    +0500 offset is honoured.
+    """
+    try:
+        if fmt == "epoch_ms":
+            if type(value) is not int or not 10**12 <= value < 10**13:  # `type` check rejects True/False
+                return None
+            return EPOCH + timedelta(milliseconds=value)
+        if not isinstance(value, str):
+            return None
+        parsed = parsedate_to_datetime(value) if fmt == "rfc2822" else datetime.fromisoformat(value)
+    except (ValueError, TypeError, IndexError, OverflowError):
+        return None
+    if parsed.tzinfo is None:  # includes RFC 2822 "-0000", which means "zone unknown"
+        return None
+    return parsed.astimezone(timezone.utc)
+
+
 def safe_case_id(case):
     """The case ID if it has the expected shape, else "UNKNOWN". Only a safe ID is ever echoed or logged."""
     case_id = case.get("case_id") if isinstance(case, dict) else None
     return case_id if isinstance(case_id, str) and CASE_ID.fullmatch(case_id) else "UNKNOWN"
 
 
+def normalise(text):
+    """NFKC-normalise, then drop invisible format characters (Unicode category Cf, e.g. zero-width space).
+
+    Applied before injection matching, so "ig\u200bnore" and full-width letters cannot hide a keyword.
+    """
+    return "".join(ch for ch in unicodedata.normalize("NFKC", text) if unicodedata.category(ch) != "Cf")
+
+
+def sends_outside(text):
+    """True if the text orders data sent or exported *to* an address outside airosea.example.
+
+    Only the target of a send/export order counts. Customers all write from outside addresses,
+    so merely containing one must not count.
+    """
+    for match in SEND_TO.finditer(text):
+        domain = match.group(1).lower()
+        if domain != INTERNAL_DOMAIN and not domain.endswith("." + INTERNAL_DOMAIN):
+            return True
+    return False
+
 # ---------------------------------------------------------------------------
-# Pipeline: extract -> sanitize -> checks -> combine -> final_guard. Not implemented yet.
+# 1. extract: the only reader of raw payload data
 # ---------------------------------------------------------------------------
 
 
 def extract(case):
-    """Turn the raw case into typed facts. This is the only function that reads raw payload values."""
-    raise NotImplementedError
+    """Turn the raw case into typed facts. This is the only function that reads raw payload values.
+
+    Returns ctx = {"case_id", "malformed", "events": [fact, ...]}. A fact holds parsed times, the
+    validated source ID, provenance flags, the signed-field hash, state and thread facts, the refs
+    that may be cited, and the free text that sanitize() and the checks scan. Only typed values and
+    refs ever move from ctx into the output.
+    """
+    events = case.get("events") if isinstance(case, dict) else None
+    ctx = {"case_id": safe_case_id(case), "malformed": not isinstance(events, list) or not events, "events": []}
+    seen = set()
+    for event in events if isinstance(events, list) else []:
+        if not envelope_ok(event, seen):
+            ctx["malformed"] = True  # an event we cannot address by ref is never analysed
+            continue
+        seen.add(event["event_ref"])
+        ctx["events"].append(extract_event(event))
+    return ctx
+
+
+def envelope_ok(event, seen):
+    """True if the event has exactly the envelope keys, a unique well-formed event_ref and a provenance dict.
+
+    The envelope is our own adapter's contract, so an extra or missing key means it is not in the
+    expected shape. (Extra keys inside the payload are fine and ignored.)
+    """
+    return (isinstance(event, dict) and set(event) == set(ENVELOPE_KEYS)
+            and isinstance(event["event_ref"], str) and EVENT_REF.fullmatch(event["event_ref"]) is not None
+            and event["event_ref"] not in seen and isinstance(event["provenance"], dict))
+
+
+def extract_event(event):
+    """Build the fact dict for one well-formed event (see extract)."""
+    ref, prov = event["event_ref"], event["provenance"]
+    connector = event["connector"]
+    row = CONNECTORS.get(connector) if isinstance(connector, str) else None
+    verified = prov.get("verified") is True  # only a real boolean True counts; the string "true" does not
+    method_ok = row is not None and prov.get("method") == row["method"]
+    identity = prov.get("source_identity")
+    fact = {
+        "ref": ref, "row": row, "connector": connector if row else None,
+        "verified": verified, "method_ok": method_ok,
+        "identity": identity if isinstance(identity, str) and identity.strip() else None,
+        "received": parse_time(event["received_at"], "iso"),
+        "envelope_time": parse_time(event["occurred_at"], "iso"),
+        "envelope_time_invalid": event["occurred_at"] is not None and parse_time(event["occurred_at"], "iso") is None,
+        "payload_ok": False, "time": None, "time_state": "missing", "source_id": None, "id_state": "missing",
+        "hash": None, "state": None, "state_ok": False, "state_refs": [], "retry_ref": None, "thread": None,
+        "cite": {}, "texts": {}, "norm": {}, "sends_outside": {}, "terms": set(), "pii": [], "other": [],
+    }
+    trusted = verified and method_ok
+
+    def cite(path, kind=None):
+        """Record `path` as citable if it resolves to a non-null value. Kind comes from the table unless given."""
+        if path and resolve(event, path) is not None:
+            if kind is None:
+                kind = "observed" if trusted and path in row["attested"] else "asserted"
+            fact["cite"][path] = (f"{ref}:{path}", kind)
+
+    for path in ("provenance.verified", "provenance.method", "received_at", "connector"):
+        cite(path, "observed")  # recorded by our own adapter
+    for path in ("occurred_at", "source_event_id"):
+        cite(path, "asserted")  # copied by the adapter from the payload
+    declared = set()
+    if row is not None:
+        extract_declared(event, row, fact, cite, declared)
+    fact["other"] = other_strings(event, ref, declared)
+    return fact
+
+
+def extract_declared(event, row, fact, cite, declared):
+    """Read the fields the connector's row declares. Each fact has exactly one source path; nothing is substituted."""
+    fact["payload_ok"] = isinstance(event["payload"], dict) and all(
+        parse_json_object(resolve(event, path)) is not None for path in row.get("json", ()))
+
+    time_path, time_format = row["time"]
+    raw_time = resolve(event, time_path)
+    if raw_time is not None:
+        fact["time"] = parse_time(raw_time, time_format)
+        fact["time_state"] = "ok" if fact["time"] else "invalid"
+
+    # IDs and times are taken from raw data here, before any redaction runs, so masking can
+    # never make two different IDs look identical.
+    id_path, id_pattern = row["id"]
+    raw_id = resolve(event, id_path)
+    if type(raw_id) is int:  # Zendesk ticket IDs are integers
+        raw_id = str(raw_id)
+    if raw_id is not None:
+        valid = isinstance(raw_id, str) and re.fullmatch(id_pattern, raw_id) is not None
+        fact["source_id"] = raw_id if valid else None
+        fact["id_state"] = "ok" if valid else "untrusted"
+
+    signed = [[path, resolve(event, path)] for path in row["signed"]]
+    fact["hash"] = hashlib.sha256(json.dumps(signed, sort_keys=True).encode()).hexdigest()
+
+    for path in row["free_text"]:
+        text = resolve(event, path)
+        if isinstance(text, str):  # last place raw free text is read; sanitize() and the checks use these copies
+            fact["texts"][path] = text
+            fact["norm"][path] = normalise(text)
+            fact["sends_outside"][path] = sends_outside(fact["norm"][path])  # before any address is masked
+            fact["terms"].update(term for term, _ in GLOSSARY if term in fact["norm"][path])
+            mark_declared(event, path, declared)
+    for path in row["pii"]:
+        if resolve(event, path) is not None:
+            fact["pii"].append(path)
+            mark_declared(event, path, declared)
+
+    state = row.get("state")
+    if state:
+        if "items" in state:
+            items = resolve(event, state["items"])
+            items = items if isinstance(items, list) else []
+            status = next((item for item in items if isinstance(item, dict) and item.get("field") == "status"), None)
+            change = (status.get("fromString"), status.get("toString")) if status else None
+        else:
+            change = (resolve(event, state["from"]), resolve(event, state["to"]))
+            change = None if change == (None, None) else change
+        fact["state"] = change
+        fact["state_ok"] = change is not None and all(value in state["known"] for value in change)
+        for path in state["refs"]:
+            cite(path)
+        fact["state_refs"] = [fact["cite"][path] for path in state["refs"] if path in fact["cite"]]
+
+    thread = row.get("thread")
+    if thread:
+        conversation, index = resolve(event, thread["id"]), resolve(event, thread["index"])
+        if isinstance(conversation, str) and isinstance(index, str):
+            try:
+                fact["thread"] = (conversation, base64.b64decode(index, validate=True))
+            except ValueError:  # not valid base64: the relation cannot even be claimed
+                pass
+        for path in (thread["id"], thread["index"]):
+            cite(path)
+
+    for path in (time_path, id_path, *row["free_text"], row.get("retry")):
+        cite(path)
+    fact["retry_ref"] = fact["cite"].get(row.get("retry"))
+
+
+def mark_declared(event, path, declared):
+    """Remember where a free-text or PII field lives, so the generic secret scan skips it (no double entries)."""
+    found = locate(event, path)
+    if found is not None:
+        declared.add((id(found[0]), found[1]))
+
+
+def other_strings(event, ref, declared):
+    """Every string value and dict key not already handled as free text or PII, paired with the ref to report it under.
+
+    Keys inside the payload are attacker-controlled, so a ref never includes them: a hit is
+    reported against its whole section ("e1:payload", "e1:provenance") instead.
+    """
+    out = []
+    for key in ENVELOPE_KEYS:
+        section = f"{ref}:{key}"
+        if isinstance(event[key], str):
+            out.append((section, event[key]))
+        else:
+            walk_strings(event[key], section, declared, out)
+    return out
+
+
+def walk_strings(node, section, declared, out):
+    """Collect (section, string) for every dict key and string value below `node`, skipping declared fields."""
+    if isinstance(node, dict):
+        out.extend((section, key) for key in node if isinstance(key, str))
+        pairs = node.items()
+    elif isinstance(node, list):
+        pairs = enumerate(node)
+    else:
+        return
+    for slot, value in pairs:
+        if isinstance(value, str):
+            if (id(node), slot) not in declared:
+                out.append((section, value))
+        else:
+            walk_strings(value, section, declared, out)
+
+# ---------------------------------------------------------------------------
+# 2. sanitize: where must something be masked?
+# ---------------------------------------------------------------------------
 
 
 def sanitize(ctx):
-    """Return every place a value must be masked, as a sorted list of {ref, kind}."""
-    raise NotImplementedError
+    """Return every place a value must be masked, as a sorted list of {ref, kind}.
+
+    PII fields are masked whole, by name. In free text, secrets are masked first and personal data
+    is then looked for in the masked text: AIR-08's "user:password@host" would otherwise look like
+    an email address. Every other string and key is scanned for secrets only. One entry per place
+    and kind, however many matches. No value is stored or returned.
+    """
+    found = set()
+    for fact in ctx["events"]:
+        found.update((f"{fact['ref']}:{path}", "pii_field") for path in fact["pii"])
+        for path, text in fact["texts"].items():
+            ref = f"{fact['ref']}:{path}"
+            for kind, pattern in SECRET_PATTERNS:
+                text, count = pattern.subn("[masked]", text)
+                if count:
+                    found.add((ref, kind))
+            found.update((ref, kind) for kind, pattern in PII_PATTERNS if pattern.search(text))
+        for ref, text in fact["other"]:
+            found.update((ref, kind) for kind, pattern in SECRET_PATTERNS if pattern.search(text))
+    return [{"ref": ref, "kind": kind} for ref, kind in sorted(found)]
+
+# ---------------------------------------------------------------------------
+# 3. Checks. Each reads only ctx and returns every finding it has.
+# ---------------------------------------------------------------------------
+
+
+def finding(code, refs=(), actions=None):
+    """One finding: a reason code, the (ref, kind) pairs behind it, and the actions it adds (default from REASONS)."""
+    if actions is None:
+        actions = [REASONS[code][1]] if REASONS[code][1] else []
+    return {"code": code, "refs": [ref for ref in refs if ref], "actions": actions}
 
 
 def check_envelope(ctx):
     """Malformed envelope, unknown connector, or a payload that cannot be parsed for its connector (AIR-08)."""
-    raise NotImplementedError
+    out = [finding("MALFORMED_ENVELOPE")] if ctx["malformed"] else []
+    for fact in ctx["events"]:
+        if fact["row"] is None:
+            out.append(finding("UNKNOWN_CONNECTOR", [fact["cite"].get("connector")]))
+        elif not fact["payload_ok"]:
+            out.append(finding("MALFORMED_PAYLOAD"))
+    return out
 
 
 def check_provenance(ctx):
     """Every provenance and timing defect of every event, not just the first (AIR-08 lists five)."""
-    raise NotImplementedError
+    out = []
+    for fact in ctx["events"]:
+        cite, row = fact["cite"], fact["row"]
+        if not fact["verified"]:
+            out.append(finding("UNVERIFIED_SOURCE", [cite.get("provenance.verified"), cite.get("provenance.method")]))
+        elif row is not None and not fact["method_ok"]:
+            out.append(finding("PROVENANCE_INCONSISTENT", [cite.get("provenance.method")]))
+        if fact["identity"] is None:
+            out.append(finding("MISSING_SOURCE_IDENTITY"))
+        if fact["received"] is None or fact["envelope_time_invalid"]:
+            out.append(finding("INVALID_TIMESTAMP", [cite.get("received_at"), cite.get("occurred_at")]))
+        if row is None:
+            continue
+        time_ref, id_ref = cite.get(row["time"][0]), cite.get(row["id"][0])
+        if fact["time_state"] == "missing":
+            out.append(finding("MISSING_OCCURRED_AT"))  # never filled in from received_at or occurred_at
+        elif fact["time_state"] == "invalid":
+            out.append(finding("INVALID_TIMESTAMP", [time_ref]))
+        elif fact["envelope_time"] is not None and fact["envelope_time"] != fact["time"]:
+            out.append(finding("TIMELINE_CONFLICT", [time_ref, cite.get("occurred_at")]))
+        if fact["id_state"] == "missing":
+            out.append(finding("MISSING_SOURCE_EVENT_ID"))
+        elif fact["id_state"] == "untrusted":
+            out.append(finding("ID_UNTRUSTED_FORMAT", [id_ref]))
+        if fact["time"] and fact["received"] and fact["time"] - fact["received"] > CLOCK_SKEW_LIMIT:
+            out.append(finding("CLOCK_SKEW", [time_ref, cite.get("received_at")]))
+    return out
 
 
 def check_sensitive(ctx):
     """PII_REDACTED and SECRET_SHAPED_VALUE from the redactions sanitize() recorded (AIR-05)."""
-    raise NotImplementedError
+    kinds = {item["kind"] for item in ctx["redactions"]}
+    out = [finding("PII_REDACTED")] if kinds & PII_KINDS else []
+    if kinds & SECRET_KINDS:
+        out.append(finding("SECRET_SHAPED_VALUE"))
+    return out
 
 
 def check_injection(ctx):
-    """Instructions in free text are flagged, never followed (AIR-04). Detection only ever adds strictness."""
-    raise NotImplementedError
+    """Instructions in free text are flagged, never followed (AIR-04). Detection only ever adds strictness.
+
+    INJECTION_REJECTED when: the override pattern matches; or an authority claim and an order both
+    match; or a bulk-data request and an order both match and the text sends it to an outside
+    address. Otherwise UNSOLICITED_ACTION_REQUEST when the text orders a fleet or infrastructure action.
+    """
+    out = []
+    for fact in ctx["events"]:
+        for path, text in fact["norm"].items():
+            order = IMPERATIVE.search(text)
+            if (INJECTION_OVERRIDE.search(text)
+                    or (order and AUTHORITY_CLAIM.search(text))
+                    or (order and BULK_DATA.search(text) and fact["sends_outside"][path])):
+                out.append(finding("INJECTION_REJECTED", [fact["cite"].get(path)]))
+            elif FLEET_ACTION.search(text):
+                out.append(finding("UNSOLICITED_ACTION_REQUEST", [fact["cite"].get(path)]))
+    return out
 
 
 def check_stale_state(ctx):
-    """Work out the current state from event time, never arrival order (AIR-03, AIR-06)."""
-    raise NotImplementedError
+    """Work out the current state from event time, never arrival order (AIR-03, AIR-06).
+
+    Order the state changes by event time. If each one's previous state equals the prior one's new
+    state, the chain is consistent: the current state is the newest new state, and any event that
+    arrived after a newer one is stale and ignored. A broken chain, an unknown state, or two
+    different changes at the same time is a TIMELINE_CONFLICT and leaves the state unconfirmed.
+    Identical changes (a redelivery) collapse into one.
+    """
+    changes = [fact for fact in ctx["events"] if fact["state"] is not None]
+    if not changes:
+        return []
+    refs = [ref for fact in changes for ref in fact["state_refs"]]
+    conflict = [finding("TIMELINE_CONFLICT", refs)]
+    if any(not fact["state_ok"] or fact["time"] is None for fact in changes):
+        return conflict
+    chain = sorted({(fact["time"], fact["state"]) for fact in changes})
+    if len({time for time, _ in chain}) != len(chain):
+        return conflict
+    if any(later[1][0] != earlier[1][1] for earlier, later in zip(chain, chain[1:])):
+        return conflict
+    current = chain[-1][1][1]
+    ctx["observed_state"] = current
+    stale = [old for old in changes if any(
+        new["time"] > old["time"] and old["received"] and new["received"] and old["received"] > new["received"]
+        for new in changes)]
+    if not stale:
+        return []
+    keep_open = ["keep_incident_open"] if current in ACTIVE_STATES else []  # an active incident is never closed by a late update
+    return [finding("STALE_STATE_IGNORED", refs + [fact["retry_ref"] for fact in stale], keep_open)]
 
 
 def check_duplicates(ctx):
-    """Deduplicate only on proof (AIR-06), and only claim a thread relation for forwards (AIR-02)."""
-    raise NotImplementedError
+    """Deduplicate only on proof (AIR-06), and only claim a thread relation for forwards (AIR-02).
+
+    Same connector, identity, source ID and signed-field hash: DUPLICATE_DELIVERY. Same source ID but
+    a different hash: ID_COLLISION, and nothing in that group is deduplicated. Different IDs in the
+    same Graph conversation where one conversationIndex extends the other: THREAD_RELATION_ASSERTED,
+    plus NEW_INFORMATION when the child's uniqueBody is not already in the parent's body.
+    """
+    out, groups = [], {}
+    for fact in ctx["events"]:
+        if fact["source_id"] is not None:
+            groups.setdefault((fact["connector"], fact["source_id"]), []).append(fact)
+    for group in groups.values():
+        if len(group) < 2:
+            continue
+        id_path = group[0]["row"]["id"][0]
+        refs = [fact["cite"].get(id_path) for fact in group]
+        if len({fact["hash"] for fact in group}) > 1:
+            out.append(finding("ID_COLLISION", refs))
+        elif len({fact["identity"] for fact in group}) == 1:
+            out.append(finding("DUPLICATE_DELIVERY", refs))
+
+    for a, b in combinations(ctx["events"], 2):
+        if a["connector"] != b["connector"] or a["thread"] is None or b["thread"] is None:
+            continue
+        if a["source_id"] is not None and a["source_id"] == b["source_id"]:
+            continue  # same ID is the duplicate rule's job
+        parent, child = sorted((a, b), key=lambda fact: len(fact["thread"][1]))
+        if (parent["thread"][0] != child["thread"][0] or len(parent["thread"][1]) == len(child["thread"][1])
+                or not child["thread"][1].startswith(parent["thread"][1])):
+            continue
+        thread = parent["row"]["thread"]
+        out.append(finding("THREAD_RELATION_ASSERTED", [fact["cite"].get(path) for fact in (parent, child)
+                                                        for path in (thread["id"], thread["index"], parent["row"]["id"][0])]))
+        new_text, full_text = child["norm"].get(thread["new_text"]), parent["norm"].get(thread["full_text"])
+        if new_text is not None and full_text is not None and " ".join(new_text.split()) not in " ".join(full_text.split()):
+            out.append(finding("NEW_INFORMATION", [child["cite"].get(thread["new_text"])]))
+    return out
 
 
 def check_correlation(ctx):
-    """Events from different connectors within 30 minutes of each other (in UTC) may be linked, never merged (AIR-07)."""
-    raise NotImplementedError
+    """Events from different connectors within 30 minutes of each other (in UTC) may be linked, never merged (AIR-07).
 
-
-def combine(ctx, findings, analysed):
-    """Build the output record from the findings."""
-    raise NotImplementedError
-
-
-def final_guard(case, record):
-    """Re-check the finished record; if anything is off, replace it with a minimal QUARANTINE record."""
-    raise NotImplementedError
+    Time window only; no keyword matching. This pack has no shared cross-connector identifier, so a
+    pair is never proven. Skipped when either event time is missing.
+    """
+    out = []
+    for a, b in combinations(ctx["events"], 2):
+        if (a["connector"] != b["connector"] and a["time"] and b["time"]
+                and abs(a["time"] - b["time"]) <= CORRELATION_WINDOW):
+            out.append(finding("UNPROVEN_CORRELATION", [a["cite"].get(a["row"]["time"][0]), b["cite"].get(b["row"]["time"][0])]))
+    return out
 
 
 GATE_CHECKS = (check_envelope, check_provenance)
 CONTENT_CHECKS = (check_injection, check_stale_state, check_duplicates, check_correlation)
+
+# ---------------------------------------------------------------------------
+# 4. combine, 5. final_guard, 6. decide
+# ---------------------------------------------------------------------------
+
+
+def combine(ctx, findings, analysed):
+    """Build the output record from the findings.
+
+    The disposition is the strictest minimum any finding sets (ACCEPT if none); nothing lowers it.
+    Actions are the base action for the disposition plus those findings add, in priority order.
+    QUARANTINE keeps only its own action; ACCEPT drops "draft incident" when the incident already
+    exists (keep_incident_open was added).
+    """
+    codes = sorted({item["code"] for item in findings})
+    disposition = max((REASONS[code][0] for code in codes), key=DISPOSITIONS.index, default="ACCEPT")
+    if disposition == "QUARANTINE":
+        actions = {BASE_ACTION["QUARANTINE"]}
+    else:
+        actions = {BASE_ACTION[disposition]}.union(*(item["actions"] for item in findings))
+        if disposition == "ACCEPT" and "keep_incident_open" in actions:
+            actions.discard("draft_incident_for_oncall")
+    actions = [action for action in ACTIONS if action in actions]  # only listed actions survive, in priority order
+
+    refs = {ref for item in findings for ref in item["refs"]}
+    for fact in ctx["events"]:
+        paths = ["provenance.verified"]
+        if fact["row"] is not None:
+            paths += [fact["row"]["time"][0], fact["row"]["id"][0]]
+            if analysed:  # content of an untrusted event is not analysed, so not cited either
+                paths += list(fact["row"]["free_text"])
+        refs.update(fact["cite"][path] for path in paths if path in fact["cite"])
+
+    state = ctx.get("observed_state")
+    return {
+        "case_id": ctx["case_id"],
+        "disposition": disposition,
+        "reason_codes": codes,
+        "evidence_refs": [{"ref": ref, "kind": kind} for ref, kind in sorted(refs)],
+        "safe_next_action": actions[0],
+        "additional_actions": actions[1:],
+        "human_review_required": disposition != "ACCEPT" or "STALE_STATE_IGNORED" in codes,
+        "redaction_requirements": ctx["redactions"],
+        "notes_on_uncertainty": [REASONS[code][2] for code in codes],
+        "observed_state": state,
+        "summary": summarise(ctx, disposition, state, analysed),
+    }
+
+
+def summarise(ctx, disposition, state, analysed):
+    """A template sentence built only from typed facts and glossary wording, never from event text."""
+    connectors = sorted({fact["connector"] for fact in ctx["events"] if fact["connector"]}) or ["unknown"]
+    sentence = f"{disposition} for {len(ctx['events'])} event(s) from {', '.join(connectors)}."
+    terms = {term for fact in ctx["events"] for term in fact["terms"]} if analysed else set()
+    if terms:
+        sentence += " Reported: " + ", ".join(wording for term, wording in GLOSSARY if term in terms) + "."
+    if state is not None:
+        sentence += f" Current state: {state}."
+    return sentence
+
+
+def one_of(words):
+    """Regex alternation matching exactly one of `words`."""
+    return "(?:" + "|".join(re.escape(word) for word in words) + ")"
+
+
+_CONNECTOR_WORDS = (*CONNECTORS, "unknown")
+_TERMS = one_of(wording for _, wording in GLOSSARY)
+# The only summaries the guard lets through: the template above, filled from closed vocabularies.
+SUMMARY = re.compile(
+    rf"{one_of(DISPOSITIONS)} for [0-9]+ event\(s\) from {one_of(_CONNECTOR_WORDS)}(?:, {one_of(_CONNECTOR_WORDS)})*\."
+    rf"(?: Reported: {_TERMS}(?:, {_TERMS})*\.)?"
+    rf"(?: Current state: {one_of(JIRA_STATES + SNS_STATES)}\.)?")
 MINIMAL_SUMMARY = "QUARANTINE; no detail is reported for this case."
+REF = re.compile(r"e[0-9]{1,3}:[A-Za-z0-9_.#=\[\]-]+")
 
 
 def minimal_record(case_id, code, redactions):
@@ -415,6 +851,40 @@ def minimal_record(case_id, code, redactions):
         "observed_state": None,
         "summary": MINIMAL_SUMMARY,
     }
+
+
+def ref_ok(case, item, kinds):
+    """True if a {ref, kind} item has a known kind and a well-formed ref that resolves to a non-null field."""
+    return (set(item) == {"ref", "kind"} and item["kind"] in kinds and isinstance(item["ref"], str)
+            and REF.fullmatch(item["ref"]) is not None and resolve_ref(case, item["ref"]) is not None)
+
+
+def final_guard(case, record):
+    """Re-check the finished record; if anything is off, replace it with a minimal QUARANTINE record.
+
+    Every string must be a constant, a resolvable ref or a validated typed value, and no secret
+    pattern may match the serialised record. The replacement keeps the valid redaction entries.
+    """
+    redaction_kinds = PII_KINDS | SECRET_KINDS
+    codes = record.get("reason_codes")
+    actions = [record.get("safe_next_action"), *record.get("additional_actions", [])]
+    serialised = json.dumps(record, sort_keys=True)
+    ok = (tuple(record) == OUTPUT_KEYS
+          and (record["case_id"] == "UNKNOWN" or CASE_ID.fullmatch(record["case_id"]) is not None)
+          and record["disposition"] in DISPOSITIONS
+          and isinstance(codes, list) and all(code in REASONS for code in codes) and codes == sorted(set(codes))
+          and record["notes_on_uncertainty"] == [REASONS[code][2] for code in codes]
+          and all(action in ACTIONS for action in actions) and len(set(actions)) == len(actions)
+          and isinstance(record["human_review_required"], bool)
+          and record["observed_state"] in (None, *JIRA_STATES, *SNS_STATES)
+          and isinstance(record["summary"], str) and SUMMARY.fullmatch(record["summary"]) is not None
+          and all(ref_ok(case, item, ("observed", "asserted")) for item in record["evidence_refs"])
+          and all(ref_ok(case, item, redaction_kinds) for item in record["redaction_requirements"])
+          and not any(pattern.search(serialised) for _, pattern in SECRET_PATTERNS))
+    if ok:
+        return record
+    kept = [item for item in record.get("redaction_requirements", []) if ref_ok(case, item, redaction_kinds)]
+    return minimal_record(safe_case_id(case), "OUTPUT_GUARD_TRIPPED", kept)
 
 
 def run_check(check, ctx):
