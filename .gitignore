@@ -218,3 +218,7 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Local only: the quest brief and macOS metadata
+brief/
+.DS_Store
