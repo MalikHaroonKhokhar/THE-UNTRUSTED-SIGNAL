@@ -1,0 +1,1587 @@
+test_cli_is_byte_identical_across_hash_seeds (tests.contract.test_contract.Contract.test_cli_is_byte_identical_across_hash_seeds)
+Determinism: two CLI runs with different PYTHONHASHSEED values print identical bytes, with no POLICY_ERROR. ... FAIL
+test_decisions_have_contract_keys_in_order (tests.contract.test_contract.Contract.test_decisions_have_contract_keys_in_order)
+Contract: every decision has exactly the contract's keys, in the contract's order, and is not a crash record. ... case=AIR-01 policy_error=NotImplementedError
+
+  test_decisions_have_contract_keys_in_order (tests.contract.test_contract.Contract.test_decisions_have_contract_keys_in_order) [AIR-01]
+Contract: every decision has exactly the contract's keys, in the contract's order, and is not a crash record. ... FAIL
+case=AIR-02 policy_error=NotImplementedError
+  test_decisions_have_contract_keys_in_order (tests.contract.test_contract.Contract.test_decisions_have_contract_keys_in_order) [AIR-02]
+Contract: every decision has exactly the contract's keys, in the contract's order, and is not a crash record. ... FAIL
+case=AIR-03 policy_error=NotImplementedError
+  test_decisions_have_contract_keys_in_order (tests.contract.test_contract.Contract.test_decisions_have_contract_keys_in_order) [AIR-03]
+Contract: every decision has exactly the contract's keys, in the contract's order, and is not a crash record. ... FAIL
+case=AIR-04 policy_error=NotImplementedError
+  test_decisions_have_contract_keys_in_order (tests.contract.test_contract.Contract.test_decisions_have_contract_keys_in_order) [AIR-04]
+Contract: every decision has exactly the contract's keys, in the contract's order, and is not a crash record. ... FAIL
+case=AIR-05 policy_error=NotImplementedError
+  test_decisions_have_contract_keys_in_order (tests.contract.test_contract.Contract.test_decisions_have_contract_keys_in_order) [AIR-05]
+Contract: every decision has exactly the contract's keys, in the contract's order, and is not a crash record. ... FAIL
+case=AIR-06 policy_error=NotImplementedError
+  test_decisions_have_contract_keys_in_order (tests.contract.test_contract.Contract.test_decisions_have_contract_keys_in_order) [AIR-06]
+Contract: every decision has exactly the contract's keys, in the contract's order, and is not a crash record. ... FAIL
+case=AIR-07 policy_error=NotImplementedError
+  test_decisions_have_contract_keys_in_order (tests.contract.test_contract.Contract.test_decisions_have_contract_keys_in_order) [AIR-07]
+Contract: every decision has exactly the contract's keys, in the contract's order, and is not a crash record. ... FAIL
+case=AIR-08 policy_error=NotImplementedError
+  test_decisions_have_contract_keys_in_order (tests.contract.test_contract.Contract.test_decisions_have_contract_keys_in_order) [AIR-08]
+Contract: every decision has exactly the contract's keys, in the contract's order, and is not a crash record. ... FAIL
+test_fixture_files_hold_exactly_the_eight_cases (tests.contract.test_contract.Contract.test_fixture_files_hold_exactly_the_eight_cases)
+Contract: events.jsonl and expected.jsonl each hold exactly AIR-01 to AIR-08, in order. ... ok
+test_obvious_injection_never_lowers_strictness (tests.invariants.test_authority.Authority.test_obvious_injection_never_lowers_strictness)
+Invariant 1: an injection appended to every free-text field never makes a decision less strict, and is flagged unless quarantined. ... case=AIR-01 policy_error=NotImplementedError
+case=AIR-01 policy_error=NotImplementedError
+
+  test_obvious_injection_never_lowers_strictness (tests.invariants.test_authority.Authority.test_obvious_injection_never_lowers_strictness) [AIR-01]
+Invariant 1: an injection appended to every free-text field never makes a decision less strict, and is flagged unless quarantined. ... FAIL
+case=AIR-02 policy_error=NotImplementedError
+case=AIR-02 policy_error=NotImplementedError
+  test_obvious_injection_never_lowers_strictness (tests.invariants.test_authority.Authority.test_obvious_injection_never_lowers_strictness) [AIR-02]
+Invariant 1: an injection appended to every free-text field never makes a decision less strict, and is flagged unless quarantined. ... FAIL
+case=AIR-03 policy_error=NotImplementedError
+case=AIR-03 policy_error=NotImplementedError
+  test_obvious_injection_never_lowers_strictness (tests.invariants.test_authority.Authority.test_obvious_injection_never_lowers_strictness) [AIR-03]
+Invariant 1: an injection appended to every free-text field never makes a decision less strict, and is flagged unless quarantined. ... FAIL
+case=AIR-04 policy_error=NotImplementedError
+case=AIR-04 policy_error=NotImplementedError
+  test_obvious_injection_never_lowers_strictness (tests.invariants.test_authority.Authority.test_obvious_injection_never_lowers_strictness) [AIR-04]
+Invariant 1: an injection appended to every free-text field never makes a decision less strict, and is flagged unless quarantined. ... FAIL
+case=AIR-05 policy_error=NotImplementedError
+case=AIR-05 policy_error=NotImplementedError
+  test_obvious_injection_never_lowers_strictness (tests.invariants.test_authority.Authority.test_obvious_injection_never_lowers_strictness) [AIR-05]
+Invariant 1: an injection appended to every free-text field never makes a decision less strict, and is flagged unless quarantined. ... FAIL
+case=AIR-06 policy_error=NotImplementedError
+case=AIR-06 policy_error=NotImplementedError
+  test_obvious_injection_never_lowers_strictness (tests.invariants.test_authority.Authority.test_obvious_injection_never_lowers_strictness) [AIR-06]
+Invariant 1: an injection appended to every free-text field never makes a decision less strict, and is flagged unless quarantined. ... FAIL
+case=AIR-07 policy_error=NotImplementedError
+case=AIR-07 policy_error=NotImplementedError
+  test_obvious_injection_never_lowers_strictness (tests.invariants.test_authority.Authority.test_obvious_injection_never_lowers_strictness) [AIR-07]
+Invariant 1: an injection appended to every free-text field never makes a decision less strict, and is flagged unless quarantined. ... FAIL
+case=AIR-08 policy_error=NotImplementedError
+case=AIR-08 policy_error=NotImplementedError
+  test_obvious_injection_never_lowers_strictness (tests.invariants.test_authority.Authority.test_obvious_injection_never_lowers_strictness) [AIR-08]
+Invariant 1: an injection appended to every free-text field never makes a decision less strict, and is flagged unless quarantined. ... FAIL
+test_payload_cannot_claim_verification_or_permissions (tests.invariants.test_authority.Authority.test_payload_cannot_claim_verification_or_permissions)
+Invariant 1: provenance and admin permissions written inside the payload change nothing at all. ... case=AIR-01 policy_error=NotImplementedError
+
+  test_payload_cannot_claim_verification_or_permissions (tests.invariants.test_authority.Authority.test_payload_cannot_claim_verification_or_permissions) [AIR-01]
+Invariant 1: provenance and admin permissions written inside the payload change nothing at all. ... FAIL
+case=AIR-02 policy_error=NotImplementedError
+  test_payload_cannot_claim_verification_or_permissions (tests.invariants.test_authority.Authority.test_payload_cannot_claim_verification_or_permissions) [AIR-02]
+Invariant 1: provenance and admin permissions written inside the payload change nothing at all. ... FAIL
+case=AIR-03 policy_error=NotImplementedError
+  test_payload_cannot_claim_verification_or_permissions (tests.invariants.test_authority.Authority.test_payload_cannot_claim_verification_or_permissions) [AIR-03]
+Invariant 1: provenance and admin permissions written inside the payload change nothing at all. ... FAIL
+case=AIR-04 policy_error=NotImplementedError
+  test_payload_cannot_claim_verification_or_permissions (tests.invariants.test_authority.Authority.test_payload_cannot_claim_verification_or_permissions) [AIR-04]
+Invariant 1: provenance and admin permissions written inside the payload change nothing at all. ... FAIL
+case=AIR-05 policy_error=NotImplementedError
+  test_payload_cannot_claim_verification_or_permissions (tests.invariants.test_authority.Authority.test_payload_cannot_claim_verification_or_permissions) [AIR-05]
+Invariant 1: provenance and admin permissions written inside the payload change nothing at all. ... FAIL
+case=AIR-06 policy_error=NotImplementedError
+  test_payload_cannot_claim_verification_or_permissions (tests.invariants.test_authority.Authority.test_payload_cannot_claim_verification_or_permissions) [AIR-06]
+Invariant 1: provenance and admin permissions written inside the payload change nothing at all. ... FAIL
+case=AIR-07 policy_error=NotImplementedError
+  test_payload_cannot_claim_verification_or_permissions (tests.invariants.test_authority.Authority.test_payload_cannot_claim_verification_or_permissions) [AIR-07]
+Invariant 1: provenance and admin permissions written inside the payload change nothing at all. ... FAIL
+case=AIR-08 policy_error=NotImplementedError
+  test_payload_cannot_claim_verification_or_permissions (tests.invariants.test_authority.Authority.test_payload_cannot_claim_verification_or_permissions) [AIR-08]
+Invariant 1: provenance and admin permissions written inside the payload change nothing at all. ... FAIL
+test_undetected_injection_changes_nothing (tests.invariants.test_authority.Authority.test_undetected_injection_changes_nothing)
+Invariant 1: an injection the detector misses leaves disposition, codes, actions and review flag unchanged. ... case=AIR-01 policy_error=NotImplementedError
+case=AIR-01 policy_error=NotImplementedError
+
+  test_undetected_injection_changes_nothing (tests.invariants.test_authority.Authority.test_undetected_injection_changes_nothing) [AIR-01]
+Invariant 1: an injection the detector misses leaves disposition, codes, actions and review flag unchanged. ... FAIL
+case=AIR-02 policy_error=NotImplementedError
+case=AIR-02 policy_error=NotImplementedError
+  test_undetected_injection_changes_nothing (tests.invariants.test_authority.Authority.test_undetected_injection_changes_nothing) [AIR-02]
+Invariant 1: an injection the detector misses leaves disposition, codes, actions and review flag unchanged. ... FAIL
+case=AIR-03 policy_error=NotImplementedError
+case=AIR-03 policy_error=NotImplementedError
+  test_undetected_injection_changes_nothing (tests.invariants.test_authority.Authority.test_undetected_injection_changes_nothing) [AIR-03]
+Invariant 1: an injection the detector misses leaves disposition, codes, actions and review flag unchanged. ... FAIL
+case=AIR-04 policy_error=NotImplementedError
+case=AIR-04 policy_error=NotImplementedError
+  test_undetected_injection_changes_nothing (tests.invariants.test_authority.Authority.test_undetected_injection_changes_nothing) [AIR-04]
+Invariant 1: an injection the detector misses leaves disposition, codes, actions and review flag unchanged. ... FAIL
+case=AIR-05 policy_error=NotImplementedError
+case=AIR-05 policy_error=NotImplementedError
+  test_undetected_injection_changes_nothing (tests.invariants.test_authority.Authority.test_undetected_injection_changes_nothing) [AIR-05]
+Invariant 1: an injection the detector misses leaves disposition, codes, actions and review flag unchanged. ... FAIL
+case=AIR-06 policy_error=NotImplementedError
+case=AIR-06 policy_error=NotImplementedError
+  test_undetected_injection_changes_nothing (tests.invariants.test_authority.Authority.test_undetected_injection_changes_nothing) [AIR-06]
+Invariant 1: an injection the detector misses leaves disposition, codes, actions and review flag unchanged. ... FAIL
+case=AIR-07 policy_error=NotImplementedError
+case=AIR-07 policy_error=NotImplementedError
+  test_undetected_injection_changes_nothing (tests.invariants.test_authority.Authority.test_undetected_injection_changes_nothing) [AIR-07]
+Invariant 1: an injection the detector misses leaves disposition, codes, actions and review flag unchanged. ... FAIL
+case=AIR-08 policy_error=NotImplementedError
+case=AIR-08 policy_error=NotImplementedError
+  test_undetected_injection_changes_nothing (tests.invariants.test_authority.Authority.test_undetected_injection_changes_nothing) [AIR-08]
+Invariant 1: an injection the detector misses leaves disposition, codes, actions and review flag unchanged. ... FAIL
+test_missing_event_time_is_never_invented (tests.invariants.test_no_fabrication.NoFabrication.test_missing_event_time_is_never_invented)
+Invariant 2: with its declared time deleted, an event gets MISSING_OCCURRED_AT; receipt time is never substituted. ... case=AIR-01 policy_error=NotImplementedError
+
+  test_missing_event_time_is_never_invented (tests.invariants.test_no_fabrication.NoFabrication.test_missing_event_time_is_never_invented) (case_id='AIR-01', event='e1')
+Invariant 2: with its declared time deleted, an event gets MISSING_OCCURRED_AT; receipt time is never substituted. ... FAIL
+case=AIR-02 policy_error=NotImplementedError
+  test_missing_event_time_is_never_invented (tests.invariants.test_no_fabrication.NoFabrication.test_missing_event_time_is_never_invented) (case_id='AIR-02', event='e1')
+Invariant 2: with its declared time deleted, an event gets MISSING_OCCURRED_AT; receipt time is never substituted. ... FAIL
+case=AIR-02 policy_error=NotImplementedError
+  test_missing_event_time_is_never_invented (tests.invariants.test_no_fabrication.NoFabrication.test_missing_event_time_is_never_invented) (case_id='AIR-02', event='e2')
+Invariant 2: with its declared time deleted, an event gets MISSING_OCCURRED_AT; receipt time is never substituted. ... FAIL
+case=AIR-03 policy_error=NotImplementedError
+  test_missing_event_time_is_never_invented (tests.invariants.test_no_fabrication.NoFabrication.test_missing_event_time_is_never_invented) (case_id='AIR-03', event='e1')
+Invariant 2: with its declared time deleted, an event gets MISSING_OCCURRED_AT; receipt time is never substituted. ... FAIL
+case=AIR-03 policy_error=NotImplementedError
+  test_missing_event_time_is_never_invented (tests.invariants.test_no_fabrication.NoFabrication.test_missing_event_time_is_never_invented) (case_id='AIR-03', event='e2')
+Invariant 2: with its declared time deleted, an event gets MISSING_OCCURRED_AT; receipt time is never substituted. ... FAIL
+case=AIR-04 policy_error=NotImplementedError
+  test_missing_event_time_is_never_invented (tests.invariants.test_no_fabrication.NoFabrication.test_missing_event_time_is_never_invented) (case_id='AIR-04', event='e1')
+Invariant 2: with its declared time deleted, an event gets MISSING_OCCURRED_AT; receipt time is never substituted. ... FAIL
+case=AIR-05 policy_error=NotImplementedError
+  test_missing_event_time_is_never_invented (tests.invariants.test_no_fabrication.NoFabrication.test_missing_event_time_is_never_invented) (case_id='AIR-05', event='e1')
+Invariant 2: with its declared time deleted, an event gets MISSING_OCCURRED_AT; receipt time is never substituted. ... FAIL
+case=AIR-06 policy_error=NotImplementedError
+  test_missing_event_time_is_never_invented (tests.invariants.test_no_fabrication.NoFabrication.test_missing_event_time_is_never_invented) (case_id='AIR-06', event='e1')
+Invariant 2: with its declared time deleted, an event gets MISSING_OCCURRED_AT; receipt time is never substituted. ... FAIL
+case=AIR-06 policy_error=NotImplementedError
+  test_missing_event_time_is_never_invented (tests.invariants.test_no_fabrication.NoFabrication.test_missing_event_time_is_never_invented) (case_id='AIR-06', event='e2')
+Invariant 2: with its declared time deleted, an event gets MISSING_OCCURRED_AT; receipt time is never substituted. ... FAIL
+case=AIR-06 policy_error=NotImplementedError
+  test_missing_event_time_is_never_invented (tests.invariants.test_no_fabrication.NoFabrication.test_missing_event_time_is_never_invented) (case_id='AIR-06', event='e3')
+Invariant 2: with its declared time deleted, an event gets MISSING_OCCURRED_AT; receipt time is never substituted. ... FAIL
+case=AIR-07 policy_error=NotImplementedError
+  test_missing_event_time_is_never_invented (tests.invariants.test_no_fabrication.NoFabrication.test_missing_event_time_is_never_invented) (case_id='AIR-07', event='e1')
+Invariant 2: with its declared time deleted, an event gets MISSING_OCCURRED_AT; receipt time is never substituted. ... FAIL
+case=AIR-07 policy_error=NotImplementedError
+  test_missing_event_time_is_never_invented (tests.invariants.test_no_fabrication.NoFabrication.test_missing_event_time_is_never_invented) (case_id='AIR-07', event='e2')
+Invariant 2: with its declared time deleted, an event gets MISSING_OCCURRED_AT; receipt time is never substituted. ... FAIL
+case=AIR-08 policy_error=NotImplementedError
+  test_missing_event_time_is_never_invented (tests.invariants.test_no_fabrication.NoFabrication.test_missing_event_time_is_never_invented) (case_id='AIR-08', event='e1')
+Invariant 2: with its declared time deleted, an event gets MISSING_OCCURRED_AT; receipt time is never substituted. ... FAIL
+test_missing_source_id_is_never_invented (tests.invariants.test_no_fabrication.NoFabrication.test_missing_source_id_is_never_invented)
+Invariant 2: with its declared source ID deleted, an event gets MISSING_SOURCE_EVENT_ID and is never accepted. ... case=AIR-01 policy_error=NotImplementedError
+
+  test_missing_source_id_is_never_invented (tests.invariants.test_no_fabrication.NoFabrication.test_missing_source_id_is_never_invented) (case_id='AIR-01', event='e1')
+Invariant 2: with its declared source ID deleted, an event gets MISSING_SOURCE_EVENT_ID and is never accepted. ... FAIL
+case=AIR-02 policy_error=NotImplementedError
+  test_missing_source_id_is_never_invented (tests.invariants.test_no_fabrication.NoFabrication.test_missing_source_id_is_never_invented) (case_id='AIR-02', event='e1')
+Invariant 2: with its declared source ID deleted, an event gets MISSING_SOURCE_EVENT_ID and is never accepted. ... FAIL
+case=AIR-02 policy_error=NotImplementedError
+  test_missing_source_id_is_never_invented (tests.invariants.test_no_fabrication.NoFabrication.test_missing_source_id_is_never_invented) (case_id='AIR-02', event='e2')
+Invariant 2: with its declared source ID deleted, an event gets MISSING_SOURCE_EVENT_ID and is never accepted. ... FAIL
+case=AIR-03 policy_error=NotImplementedError
+  test_missing_source_id_is_never_invented (tests.invariants.test_no_fabrication.NoFabrication.test_missing_source_id_is_never_invented) (case_id='AIR-03', event='e1')
+Invariant 2: with its declared source ID deleted, an event gets MISSING_SOURCE_EVENT_ID and is never accepted. ... FAIL
+case=AIR-03 policy_error=NotImplementedError
+  test_missing_source_id_is_never_invented (tests.invariants.test_no_fabrication.NoFabrication.test_missing_source_id_is_never_invented) (case_id='AIR-03', event='e2')
+Invariant 2: with its declared source ID deleted, an event gets MISSING_SOURCE_EVENT_ID and is never accepted. ... FAIL
+case=AIR-04 policy_error=NotImplementedError
+  test_missing_source_id_is_never_invented (tests.invariants.test_no_fabrication.NoFabrication.test_missing_source_id_is_never_invented) (case_id='AIR-04', event='e1')
+Invariant 2: with its declared source ID deleted, an event gets MISSING_SOURCE_EVENT_ID and is never accepted. ... FAIL
+case=AIR-05 policy_error=NotImplementedError
+  test_missing_source_id_is_never_invented (tests.invariants.test_no_fabrication.NoFabrication.test_missing_source_id_is_never_invented) (case_id='AIR-05', event='e1')
+Invariant 2: with its declared source ID deleted, an event gets MISSING_SOURCE_EVENT_ID and is never accepted. ... FAIL
+case=AIR-06 policy_error=NotImplementedError
+  test_missing_source_id_is_never_invented (tests.invariants.test_no_fabrication.NoFabrication.test_missing_source_id_is_never_invented) (case_id='AIR-06', event='e1')
+Invariant 2: with its declared source ID deleted, an event gets MISSING_SOURCE_EVENT_ID and is never accepted. ... FAIL
+case=AIR-06 policy_error=NotImplementedError
+  test_missing_source_id_is_never_invented (tests.invariants.test_no_fabrication.NoFabrication.test_missing_source_id_is_never_invented) (case_id='AIR-06', event='e2')
+Invariant 2: with its declared source ID deleted, an event gets MISSING_SOURCE_EVENT_ID and is never accepted. ... FAIL
+case=AIR-06 policy_error=NotImplementedError
+  test_missing_source_id_is_never_invented (tests.invariants.test_no_fabrication.NoFabrication.test_missing_source_id_is_never_invented) (case_id='AIR-06', event='e3')
+Invariant 2: with its declared source ID deleted, an event gets MISSING_SOURCE_EVENT_ID and is never accepted. ... FAIL
+case=AIR-07 policy_error=NotImplementedError
+  test_missing_source_id_is_never_invented (tests.invariants.test_no_fabrication.NoFabrication.test_missing_source_id_is_never_invented) (case_id='AIR-07', event='e1')
+Invariant 2: with its declared source ID deleted, an event gets MISSING_SOURCE_EVENT_ID and is never accepted. ... FAIL
+case=AIR-07 policy_error=NotImplementedError
+  test_missing_source_id_is_never_invented (tests.invariants.test_no_fabrication.NoFabrication.test_missing_source_id_is_never_invented) (case_id='AIR-07', event='e2')
+Invariant 2: with its declared source ID deleted, an event gets MISSING_SOURCE_EVENT_ID and is never accepted. ... FAIL
+case=AIR-08 policy_error=NotImplementedError
+  test_missing_source_id_is_never_invented (tests.invariants.test_no_fabrication.NoFabrication.test_missing_source_id_is_never_invented) (case_id='AIR-08', event='e1')
+Invariant 2: with its declared source ID deleted, an event gets MISSING_SOURCE_EVENT_ID and is never accepted. ... FAIL
+test_diagnosis_survives_redaction (tests.invariants.test_no_leaks.NoLeaks.test_diagnosis_survives_redaction)
+Invariant 3: AIR-05 keeps its diagnosis ("HTTP 401 unauthorised") while the pasted key is masked and absent. ... case=AIR-05 policy_error=NotImplementedError
+FAIL
+test_exception_message_is_never_logged (tests.invariants.test_no_leaks.NoLeaks.test_exception_message_is_never_logged)
+Invariant 3: when the policy crashes on input that echoes a secret, only the exception's type name is logged. ... ok
+test_planted_key_in_id_header_and_dict_key_never_leaks (tests.invariants.test_no_leaks.NoLeaks.test_planted_key_in_id_header_and_dict_key_never_leaks)
+Invariant 3: the fake key planted in an ID field, a header value and a dict key is detected and never leaks. ... 
+  test_planted_key_in_id_header_and_dict_key_never_leaks (tests.invariants.test_no_leaks.NoLeaks.test_planted_key_in_id_header_and_dict_key_never_leaks) [AIR-01]
+Invariant 3: the fake key planted in an ID field, a header value and a dict key is detected and never leaks. ... FAIL
+  test_planted_key_in_id_header_and_dict_key_never_leaks (tests.invariants.test_no_leaks.NoLeaks.test_planted_key_in_id_header_and_dict_key_never_leaks) [AIR-02]
+Invariant 3: the fake key planted in an ID field, a header value and a dict key is detected and never leaks. ... FAIL
+  test_planted_key_in_id_header_and_dict_key_never_leaks (tests.invariants.test_no_leaks.NoLeaks.test_planted_key_in_id_header_and_dict_key_never_leaks) [AIR-03]
+Invariant 3: the fake key planted in an ID field, a header value and a dict key is detected and never leaks. ... FAIL
+  test_planted_key_in_id_header_and_dict_key_never_leaks (tests.invariants.test_no_leaks.NoLeaks.test_planted_key_in_id_header_and_dict_key_never_leaks) [AIR-04]
+Invariant 3: the fake key planted in an ID field, a header value and a dict key is detected and never leaks. ... FAIL
+  test_planted_key_in_id_header_and_dict_key_never_leaks (tests.invariants.test_no_leaks.NoLeaks.test_planted_key_in_id_header_and_dict_key_never_leaks) [AIR-05]
+Invariant 3: the fake key planted in an ID field, a header value and a dict key is detected and never leaks. ... FAIL
+  test_planted_key_in_id_header_and_dict_key_never_leaks (tests.invariants.test_no_leaks.NoLeaks.test_planted_key_in_id_header_and_dict_key_never_leaks) [AIR-06]
+Invariant 3: the fake key planted in an ID field, a header value and a dict key is detected and never leaks. ... FAIL
+  test_planted_key_in_id_header_and_dict_key_never_leaks (tests.invariants.test_no_leaks.NoLeaks.test_planted_key_in_id_header_and_dict_key_never_leaks) [AIR-07]
+Invariant 3: the fake key planted in an ID field, a header value and a dict key is detected and never leaks. ... FAIL
+  test_planted_key_in_id_header_and_dict_key_never_leaks (tests.invariants.test_no_leaks.NoLeaks.test_planted_key_in_id_header_and_dict_key_never_leaks) [AIR-08]
+Invariant 3: the fake key planted in an ID field, a header value and a dict key is detected and never leaks. ... FAIL
+test_planted_values_in_free_text_never_leak (tests.invariants.test_no_leaks.NoLeaks.test_planted_values_in_free_text_never_leak)
+Invariant 3: a fake key and phone planted in every free-text field are detected and appear in neither output nor logs. ... 
+  test_planted_values_in_free_text_never_leak (tests.invariants.test_no_leaks.NoLeaks.test_planted_values_in_free_text_never_leak) [AIR-01]
+Invariant 3: a fake key and phone planted in every free-text field are detected and appear in neither output nor logs. ... FAIL
+  test_planted_values_in_free_text_never_leak (tests.invariants.test_no_leaks.NoLeaks.test_planted_values_in_free_text_never_leak) [AIR-02]
+Invariant 3: a fake key and phone planted in every free-text field are detected and appear in neither output nor logs. ... FAIL
+  test_planted_values_in_free_text_never_leak (tests.invariants.test_no_leaks.NoLeaks.test_planted_values_in_free_text_never_leak) [AIR-03]
+Invariant 3: a fake key and phone planted in every free-text field are detected and appear in neither output nor logs. ... FAIL
+  test_planted_values_in_free_text_never_leak (tests.invariants.test_no_leaks.NoLeaks.test_planted_values_in_free_text_never_leak) [AIR-04]
+Invariant 3: a fake key and phone planted in every free-text field are detected and appear in neither output nor logs. ... FAIL
+  test_planted_values_in_free_text_never_leak (tests.invariants.test_no_leaks.NoLeaks.test_planted_values_in_free_text_never_leak) [AIR-05]
+Invariant 3: a fake key and phone planted in every free-text field are detected and appear in neither output nor logs. ... FAIL
+  test_planted_values_in_free_text_never_leak (tests.invariants.test_no_leaks.NoLeaks.test_planted_values_in_free_text_never_leak) [AIR-06]
+Invariant 3: a fake key and phone planted in every free-text field are detected and appear in neither output nor logs. ... FAIL
+  test_planted_values_in_free_text_never_leak (tests.invariants.test_no_leaks.NoLeaks.test_planted_values_in_free_text_never_leak) [AIR-07]
+Invariant 3: a fake key and phone planted in every free-text field are detected and appear in neither output nor logs. ... FAIL
+  test_planted_values_in_free_text_never_leak (tests.invariants.test_no_leaks.NoLeaks.test_planted_values_in_free_text_never_leak) [AIR-08]
+Invariant 3: a fake key and phone planted in every free-text field are detected and appear in neither output nor logs. ... FAIL
+test_broken_state_chain_is_a_conflict (tests.invariants.test_no_silent_resolve.NoSilentResolve.test_broken_state_chain_is_a_conflict)
+Invariant 4: if AIR-06's previous-state chain breaks, the current state is unconfirmed and a human reviews it. ... case=AIR-06 policy_error=NotImplementedError
+FAIL
+test_file_order_never_changes_the_decision (tests.invariants.test_no_silent_resolve.NoSilentResolve.test_file_order_never_changes_the_decision)
+Invariant 4: every ordering of AIR-03's and AIR-06's events gives the same decision and observed_state. ... case=AIR-03 policy_error=NotImplementedError
+FAIL
+test_reused_message_id_is_not_deduplicated (tests.invariants.test_no_silent_resolve.NoSilentResolve.test_reused_message_id_is_not_deduplicated)
+Invariant 4: AIR-06's MessageId reused with different content is an ID collision, never a silent duplicate. ... case=AIR-06 policy_error=NotImplementedError
+FAIL
+test_always_accept_policy_is_caught (tests.negative.test_harness_catches_bad.HarnessCatchesBad.test_always_accept_policy_is_caught)
+Negative: a policy that always returns ACCEPT produces violations on every case. ... ok
+test_always_crash_policy_is_caught (tests.negative.test_harness_catches_bad.HarnessCatchesBad.test_always_crash_policy_is_caught)
+Negative: a policy that crashes on everything is caught through POLICY_ERROR, and decide() still never raises. ... ok
+test_always_quarantine_policy_is_caught (tests.negative.test_harness_catches_bad.HarnessCatchesBad.test_always_quarantine_policy_is_caught)
+Negative: a policy that always returns QUARANTINE produces violations on every case. ... ok
+test_wrong_air06_state_is_caught (tests.negative.test_harness_catches_bad.HarnessCatchesBad.test_wrong_air06_state_is_caught)
+Negative (invariant 4): AIR-06 shown as recovered ("OK") is caught, even by the state oracle alone. ... ok
+test_each_case_matches_expected (tests.test_policy.FixtureCases.test_each_case_matches_expected)
+All eight cases give their expected decision and pass every harness check (all four invariants). ... case=AIR-01 policy_error=NotImplementedError
+
+  test_each_case_matches_expected (tests.test_policy.FixtureCases.test_each_case_matches_expected) [AIR-01]
+All eight cases give their expected decision and pass every harness check (all four invariants). ... FAIL
+case=AIR-02 policy_error=NotImplementedError
+  test_each_case_matches_expected (tests.test_policy.FixtureCases.test_each_case_matches_expected) [AIR-02]
+All eight cases give their expected decision and pass every harness check (all four invariants). ... FAIL
+case=AIR-03 policy_error=NotImplementedError
+  test_each_case_matches_expected (tests.test_policy.FixtureCases.test_each_case_matches_expected) [AIR-03]
+All eight cases give their expected decision and pass every harness check (all four invariants). ... FAIL
+case=AIR-04 policy_error=NotImplementedError
+  test_each_case_matches_expected (tests.test_policy.FixtureCases.test_each_case_matches_expected) [AIR-04]
+All eight cases give their expected decision and pass every harness check (all four invariants). ... FAIL
+case=AIR-05 policy_error=NotImplementedError
+  test_each_case_matches_expected (tests.test_policy.FixtureCases.test_each_case_matches_expected) [AIR-05]
+All eight cases give their expected decision and pass every harness check (all four invariants). ... FAIL
+case=AIR-06 policy_error=NotImplementedError
+  test_each_case_matches_expected (tests.test_policy.FixtureCases.test_each_case_matches_expected) [AIR-06]
+All eight cases give their expected decision and pass every harness check (all four invariants). ... FAIL
+case=AIR-07 policy_error=NotImplementedError
+  test_each_case_matches_expected (tests.test_policy.FixtureCases.test_each_case_matches_expected) [AIR-07]
+All eight cases give their expected decision and pass every harness check (all four invariants). ... FAIL
+case=AIR-08 policy_error=NotImplementedError
+  test_each_case_matches_expected (tests.test_policy.FixtureCases.test_each_case_matches_expected) [AIR-08]
+All eight cases give their expected decision and pass every harness check (all four invariants). ... FAIL
+test_each_defect_alone_quarantines (tests.variants.test_quarantine_variants.QuarantineVariants.test_each_defect_alone_quarantines)
+Invariant 2: each AIR-08 defect on its own still quarantines with its reason code and a single action. ... case=AIR-08-repaired policy_error=NotImplementedError
+
+  test_each_defect_alone_quarantines (tests.variants.test_quarantine_variants.QuarantineVariants.test_each_defect_alone_quarantines) [no signature]
+Invariant 2: each AIR-08 defect on its own still quarantines with its reason code and a single action. ... FAIL
+case=AIR-08-repaired policy_error=NotImplementedError
+  test_each_defect_alone_quarantines (tests.variants.test_quarantine_variants.QuarantineVariants.test_each_defect_alone_quarantines) [wrong method]
+Invariant 2: each AIR-08 defect on its own still quarantines with its reason code and a single action. ... FAIL
+case=AIR-08-repaired policy_error=NotImplementedError
+  test_each_defect_alone_quarantines (tests.variants.test_quarantine_variants.QuarantineVariants.test_each_defect_alone_quarantines) [no identity]
+Invariant 2: each AIR-08 defect on its own still quarantines with its reason code and a single action. ... FAIL
+case=AIR-08-repaired policy_error=NotImplementedError
+  test_each_defect_alone_quarantines (tests.variants.test_quarantine_variants.QuarantineVariants.test_each_defect_alone_quarantines) [impossible date]
+Invariant 2: each AIR-08 defect on its own still quarantines with its reason code and a single action. ... FAIL
+case=AIR-08-repaired policy_error=NotImplementedError
+  test_each_defect_alone_quarantines (tests.variants.test_quarantine_variants.QuarantineVariants.test_each_defect_alone_quarantines) [no timezone]
+Invariant 2: each AIR-08 defect on its own still quarantines with its reason code and a single action. ... FAIL
+case=AIR-08-repaired policy_error=NotImplementedError
+  test_each_defect_alone_quarantines (tests.variants.test_quarantine_variants.QuarantineVariants.test_each_defect_alone_quarantines) [no timestamp]
+Invariant 2: each AIR-08 defect on its own still quarantines with its reason code and a single action. ... FAIL
+case=AIR-08-repaired policy_error=NotImplementedError
+  test_each_defect_alone_quarantines (tests.variants.test_quarantine_variants.QuarantineVariants.test_each_defect_alone_quarantines) [truncated body]
+Invariant 2: each AIR-08 defect on its own still quarantines with its reason code and a single action. ... FAIL
+test_repaired_rollback_request_is_never_accepted (tests.variants.test_quarantine_variants.QuarantineVariants.test_repaired_rollback_request_is_never_accepted)
+Invariant 1: a properly signed fleet-wide rollback request is NEEDS_REVIEW with UNSOLICITED_ACTION_REQUEST, never ACCEPT. ... case=AIR-08-repaired policy_error=NotImplementedError
+FAIL
+
+======================================================================
+FAIL: test_cli_is_byte_identical_across_hash_seeds (tests.contract.test_contract.Contract.test_cli_is_byte_identical_across_hash_seeds)
+Determinism: two CLI runs with different PYTHONHASHSEED values print identical bytes, with no POLICY_ERROR.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./tests/contract/test_contract.py", line 34, in test_cli_is_byte_identical_across_hash_seeds
+    self.assertNotIn(b"POLICY_ERROR", runs[0])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: b'POLICY_ERROR' unexpectedly found in b'{"additional_actions": [], "case_id": "AIR-01", "disposition": "QUARANTINE", "evidence_refs": [], "human_review_required": true, "notes_on_uncertainty": ["The policy could not evaluate this event."], "observed_state": null, "reason_codes": ["POLICY_ERROR"], "redaction_requirements": [], "safe_next_action": "quarantine_hold_verify_via_known_channel", "summary": "QUARANTINE; no detail is reported for this case."}\n{"additional_actions": [], "case_id": "AIR-02", "disposition": "QUARANTINE", "evidence_refs": [], "human_review_required": true, "notes_on_uncertainty": ["The policy could not evaluate this event."], "observed_state": null, "reason_codes": ["POLICY_ERROR"], "redaction_requirements": [], "safe_next_action": "quarantine_hold_verify_via_known_channel", "summary": "QUARANTINE; no detail is reported for this case."}\n{"additional_actions": [], "case_id": "AIR-03", "disposition": "QUARANTINE", "evidence_refs": [], "human_review_required": true, "notes_on_uncertainty": ["The policy could not evaluate this event."], "observed_state": null, "reason_codes": ["POLICY_ERROR"], "redaction_requirements": [], "safe_next_action": "quarantine_hold_verify_via_known_channel", "summary": "QUARANTINE; no detail is reported for this case."}\n{"additional_actions": [], "case_id": "AIR-04", "disposition": "QUARANTINE", "evidence_refs": [], "human_review_required": true, "notes_on_uncertainty": ["The policy could not evaluate this event."], "observed_state": null, "reason_codes": ["POLICY_ERROR"], "redaction_requirements": [], "safe_next_action": "quarantine_hold_verify_via_known_channel", "summary": "QUARANTINE; no detail is reported for this case."}\n{"additional_actions": [], "case_id": "AIR-05", "disposition": "QUARANTINE", "evidence_refs": [], "human_review_required": true, "notes_on_uncertainty": ["The policy could not evaluate this event."], "observed_state": null, "reason_codes": ["POLICY_ERROR"], "redaction_requirements": [], "safe_next_action": "quarantine_hold_verify_via_known_channel", "summary": "QUARANTINE; no detail is reported for this case."}\n{"additional_actions": [], "case_id": "AIR-06", "disposition": "QUARANTINE", "evidence_refs": [], "human_review_required": true, "notes_on_uncertainty": ["The policy could not evaluate this event."], "observed_state": null, "reason_codes": ["POLICY_ERROR"], "redaction_requirements": [], "safe_next_action": "quarantine_hold_verify_via_known_channel", "summary": "QUARANTINE; no detail is reported for this case."}\n{"additional_actions": [], "case_id": "AIR-07", "disposition": "QUARANTINE", "evidence_refs": [], "human_review_required": true, "notes_on_uncertainty": ["The policy could not evaluate this event."], "observed_state": null, "reason_codes": ["POLICY_ERROR"], "redaction_requirements": [], "safe_next_action": "quarantine_hold_verify_via_known_channel", "summary": "QUARANTINE; no detail is reported for this case."}\n{"additional_actions": [], "case_id": "AIR-08", "disposition": "QUARANTINE", "evidence_refs": [], "human_review_required": true, "notes_on_uncertainty": ["The policy could not evaluate this event."], "observed_state": null, "reason_codes": ["POLICY_ERROR"], "redaction_requirements": [], "safe_next_action": "quarantine_hold_verify_via_known_channel", "summary": "QUARANTINE; no detail is reported for this case."}\n'
+
+======================================================================
+FAIL: test_decisions_have_contract_keys_in_order (tests.contract.test_contract.Contract.test_decisions_have_contract_keys_in_order) [AIR-01]
+Contract: every decision has exactly the contract's keys, in the contract's order, and is not a crash record.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./tests/contract/test_contract.py", line 25, in test_decisions_have_contract_keys_in_order
+    self.assertNotIn("POLICY_ERROR", decision["reason_codes"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'POLICY_ERROR' unexpectedly found in ['POLICY_ERROR']
+
+======================================================================
+FAIL: test_decisions_have_contract_keys_in_order (tests.contract.test_contract.Contract.test_decisions_have_contract_keys_in_order) [AIR-02]
+Contract: every decision has exactly the contract's keys, in the contract's order, and is not a crash record.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./tests/contract/test_contract.py", line 25, in test_decisions_have_contract_keys_in_order
+    self.assertNotIn("POLICY_ERROR", decision["reason_codes"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'POLICY_ERROR' unexpectedly found in ['POLICY_ERROR']
+
+======================================================================
+FAIL: test_decisions_have_contract_keys_in_order (tests.contract.test_contract.Contract.test_decisions_have_contract_keys_in_order) [AIR-03]
+Contract: every decision has exactly the contract's keys, in the contract's order, and is not a crash record.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./tests/contract/test_contract.py", line 25, in test_decisions_have_contract_keys_in_order
+    self.assertNotIn("POLICY_ERROR", decision["reason_codes"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'POLICY_ERROR' unexpectedly found in ['POLICY_ERROR']
+
+======================================================================
+FAIL: test_decisions_have_contract_keys_in_order (tests.contract.test_contract.Contract.test_decisions_have_contract_keys_in_order) [AIR-04]
+Contract: every decision has exactly the contract's keys, in the contract's order, and is not a crash record.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./tests/contract/test_contract.py", line 25, in test_decisions_have_contract_keys_in_order
+    self.assertNotIn("POLICY_ERROR", decision["reason_codes"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'POLICY_ERROR' unexpectedly found in ['POLICY_ERROR']
+
+======================================================================
+FAIL: test_decisions_have_contract_keys_in_order (tests.contract.test_contract.Contract.test_decisions_have_contract_keys_in_order) [AIR-05]
+Contract: every decision has exactly the contract's keys, in the contract's order, and is not a crash record.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./tests/contract/test_contract.py", line 25, in test_decisions_have_contract_keys_in_order
+    self.assertNotIn("POLICY_ERROR", decision["reason_codes"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'POLICY_ERROR' unexpectedly found in ['POLICY_ERROR']
+
+======================================================================
+FAIL: test_decisions_have_contract_keys_in_order (tests.contract.test_contract.Contract.test_decisions_have_contract_keys_in_order) [AIR-06]
+Contract: every decision has exactly the contract's keys, in the contract's order, and is not a crash record.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./tests/contract/test_contract.py", line 25, in test_decisions_have_contract_keys_in_order
+    self.assertNotIn("POLICY_ERROR", decision["reason_codes"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'POLICY_ERROR' unexpectedly found in ['POLICY_ERROR']
+
+======================================================================
+FAIL: test_decisions_have_contract_keys_in_order (tests.contract.test_contract.Contract.test_decisions_have_contract_keys_in_order) [AIR-07]
+Contract: every decision has exactly the contract's keys, in the contract's order, and is not a crash record.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./tests/contract/test_contract.py", line 25, in test_decisions_have_contract_keys_in_order
+    self.assertNotIn("POLICY_ERROR", decision["reason_codes"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'POLICY_ERROR' unexpectedly found in ['POLICY_ERROR']
+
+======================================================================
+FAIL: test_decisions_have_contract_keys_in_order (tests.contract.test_contract.Contract.test_decisions_have_contract_keys_in_order) [AIR-08]
+Contract: every decision has exactly the contract's keys, in the contract's order, and is not a crash record.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./tests/contract/test_contract.py", line 25, in test_decisions_have_contract_keys_in_order
+    self.assertNotIn("POLICY_ERROR", decision["reason_codes"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'POLICY_ERROR' unexpectedly found in ['POLICY_ERROR']
+
+======================================================================
+FAIL: test_obvious_injection_never_lowers_strictness (tests.invariants.test_authority.Authority.test_obvious_injection_never_lowers_strictness) [AIR-01]
+Invariant 1: an injection appended to every free-text field never makes a decision less strict, and is flagged unless quarantined.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./tests/invariants/test_authority.py", line 15, in test_obvious_injection_never_lowers_strictness
+    output = decide_checked(self, append_to_free_text(case, OBVIOUS_INJECTION))
+  File "./tests/helpers.py", line 163, in decide_checked
+    test.assertNotIn("POLICY_ERROR", output["reason_codes"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'POLICY_ERROR' unexpectedly found in ['POLICY_ERROR']
+
+======================================================================
+FAIL: test_obvious_injection_never_lowers_strictness (tests.invariants.test_authority.Authority.test_obvious_injection_never_lowers_strictness) [AIR-02]
+Invariant 1: an injection appended to every free-text field never makes a decision less strict, and is flagged unless quarantined.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./tests/invariants/test_authority.py", line 15, in test_obvious_injection_never_lowers_strictness
+    output = decide_checked(self, append_to_free_text(case, OBVIOUS_INJECTION))
+  File "./tests/helpers.py", line 163, in decide_checked
+    test.assertNotIn("POLICY_ERROR", output["reason_codes"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'POLICY_ERROR' unexpectedly found in ['POLICY_ERROR']
+
+======================================================================
+FAIL: test_obvious_injection_never_lowers_strictness (tests.invariants.test_authority.Authority.test_obvious_injection_never_lowers_strictness) [AIR-03]
+Invariant 1: an injection appended to every free-text field never makes a decision less strict, and is flagged unless quarantined.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./tests/invariants/test_authority.py", line 15, in test_obvious_injection_never_lowers_strictness
+    output = decide_checked(self, append_to_free_text(case, OBVIOUS_INJECTION))
+  File "./tests/helpers.py", line 163, in decide_checked
+    test.assertNotIn("POLICY_ERROR", output["reason_codes"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'POLICY_ERROR' unexpectedly found in ['POLICY_ERROR']
+
+======================================================================
+FAIL: test_obvious_injection_never_lowers_strictness (tests.invariants.test_authority.Authority.test_obvious_injection_never_lowers_strictness) [AIR-04]
+Invariant 1: an injection appended to every free-text field never makes a decision less strict, and is flagged unless quarantined.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./tests/invariants/test_authority.py", line 15, in test_obvious_injection_never_lowers_strictness
+    output = decide_checked(self, append_to_free_text(case, OBVIOUS_INJECTION))
+  File "./tests/helpers.py", line 163, in decide_checked
+    test.assertNotIn("POLICY_ERROR", output["reason_codes"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'POLICY_ERROR' unexpectedly found in ['POLICY_ERROR']
+
+======================================================================
+FAIL: test_obvious_injection_never_lowers_strictness (tests.invariants.test_authority.Authority.test_obvious_injection_never_lowers_strictness) [AIR-05]
+Invariant 1: an injection appended to every free-text field never makes a decision less strict, and is flagged unless quarantined.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./tests/invariants/test_authority.py", line 15, in test_obvious_injection_never_lowers_strictness
+    output = decide_checked(self, append_to_free_text(case, OBVIOUS_INJECTION))
+  File "./tests/helpers.py", line 163, in decide_checked
+    test.assertNotIn("POLICY_ERROR", output["reason_codes"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'POLICY_ERROR' unexpectedly found in ['POLICY_ERROR']
+
+======================================================================
+FAIL: test_obvious_injection_never_lowers_strictness (tests.invariants.test_authority.Authority.test_obvious_injection_never_lowers_strictness) [AIR-06]
+Invariant 1: an injection appended to every free-text field never makes a decision less strict, and is flagged unless quarantined.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./tests/invariants/test_authority.py", line 15, in test_obvious_injection_never_lowers_strictness
+    output = decide_checked(self, append_to_free_text(case, OBVIOUS_INJECTION))
+  File "./tests/helpers.py", line 163, in decide_checked
+    test.assertNotIn("POLICY_ERROR", output["reason_codes"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'POLICY_ERROR' unexpectedly found in ['POLICY_ERROR']
+
+======================================================================
+FAIL: test_obvious_injection_never_lowers_strictness (tests.invariants.test_authority.Authority.test_obvious_injection_never_lowers_strictness) [AIR-07]
+Invariant 1: an injection appended to every free-text field never makes a decision less strict, and is flagged unless quarantined.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./tests/invariants/test_authority.py", line 15, in test_obvious_injection_never_lowers_strictness
+    output = decide_checked(self, append_to_free_text(case, OBVIOUS_INJECTION))
+  File "./tests/helpers.py", line 163, in decide_checked
+    test.assertNotIn("POLICY_ERROR", output["reason_codes"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'POLICY_ERROR' unexpectedly found in ['POLICY_ERROR']
+
+======================================================================
+FAIL: test_obvious_injection_never_lowers_strictness (tests.invariants.test_authority.Authority.test_obvious_injection_never_lowers_strictness) [AIR-08]
+Invariant 1: an injection appended to every free-text field never makes a decision less strict, and is flagged unless quarantined.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./tests/invariants/test_authority.py", line 15, in test_obvious_injection_never_lowers_strictness
+    output = decide_checked(self, append_to_free_text(case, OBVIOUS_INJECTION))
+  File "./tests/helpers.py", line 163, in decide_checked
+    test.assertNotIn("POLICY_ERROR", output["reason_codes"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'POLICY_ERROR' unexpectedly found in ['POLICY_ERROR']
+
+======================================================================
+FAIL: test_payload_cannot_claim_verification_or_permissions (tests.invariants.test_authority.Authority.test_payload_cannot_claim_verification_or_permissions) [AIR-01]
+Invariant 1: provenance and admin permissions written inside the payload change nothing at all.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./tests/invariants/test_authority.py", line 38, in test_payload_cannot_claim_verification_or_permissions
+    self.assertEqual(decide_checked(self, mutated), policy.decide(case))
+                     ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "./tests/helpers.py", line 163, in decide_checked
+    test.assertNotIn("POLICY_ERROR", output["reason_codes"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'POLICY_ERROR' unexpectedly found in ['POLICY_ERROR']
+
+======================================================================
+FAIL: test_payload_cannot_claim_verification_or_permissions (tests.invariants.test_authority.Authority.test_payload_cannot_claim_verification_or_permissions) [AIR-02]
+Invariant 1: provenance and admin permissions written inside the payload change nothing at all.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./tests/invariants/test_authority.py", line 38, in test_payload_cannot_claim_verification_or_permissions
+    self.assertEqual(decide_checked(self, mutated), policy.decide(case))
+                     ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "./tests/helpers.py", line 163, in decide_checked
+    test.assertNotIn("POLICY_ERROR", output["reason_codes"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'POLICY_ERROR' unexpectedly found in ['POLICY_ERROR']
+
+======================================================================
+FAIL: test_payload_cannot_claim_verification_or_permissions (tests.invariants.test_authority.Authority.test_payload_cannot_claim_verification_or_permissions) [AIR-03]
+Invariant 1: provenance and admin permissions written inside the payload change nothing at all.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./tests/invariants/test_authority.py", line 38, in test_payload_cannot_claim_verification_or_permissions
+    self.assertEqual(decide_checked(self, mutated), policy.decide(case))
+                     ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "./tests/helpers.py", line 163, in decide_checked
+    test.assertNotIn("POLICY_ERROR", output["reason_codes"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'POLICY_ERROR' unexpectedly found in ['POLICY_ERROR']
+
+======================================================================
+FAIL: test_payload_cannot_claim_verification_or_permissions (tests.invariants.test_authority.Authority.test_payload_cannot_claim_verification_or_permissions) [AIR-04]
+Invariant 1: provenance and admin permissions written inside the payload change nothing at all.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./tests/invariants/test_authority.py", line 38, in test_payload_cannot_claim_verification_or_permissions
+    self.assertEqual(decide_checked(self, mutated), policy.decide(case))
+                     ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "./tests/helpers.py", line 163, in decide_checked
+    test.assertNotIn("POLICY_ERROR", output["reason_codes"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'POLICY_ERROR' unexpectedly found in ['POLICY_ERROR']
+
+======================================================================
+FAIL: test_payload_cannot_claim_verification_or_permissions (tests.invariants.test_authority.Authority.test_payload_cannot_claim_verification_or_permissions) [AIR-05]
+Invariant 1: provenance and admin permissions written inside the payload change nothing at all.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./tests/invariants/test_authority.py", line 38, in test_payload_cannot_claim_verification_or_permissions
+    self.assertEqual(decide_checked(self, mutated), policy.decide(case))
+                     ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "./tests/helpers.py", line 163, in decide_checked
+    test.assertNotIn("POLICY_ERROR", output["reason_codes"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'POLICY_ERROR' unexpectedly found in ['POLICY_ERROR']
+
+======================================================================
+FAIL: test_payload_cannot_claim_verification_or_permissions (tests.invariants.test_authority.Authority.test_payload_cannot_claim_verification_or_permissions) [AIR-06]
+Invariant 1: provenance and admin permissions written inside the payload change nothing at all.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./tests/invariants/test_authority.py", line 38, in test_payload_cannot_claim_verification_or_permissions
+    self.assertEqual(decide_checked(self, mutated), policy.decide(case))
+                     ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "./tests/helpers.py", line 163, in decide_checked
+    test.assertNotIn("POLICY_ERROR", output["reason_codes"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'POLICY_ERROR' unexpectedly found in ['POLICY_ERROR']
+
+======================================================================
+FAIL: test_payload_cannot_claim_verification_or_permissions (tests.invariants.test_authority.Authority.test_payload_cannot_claim_verification_or_permissions) [AIR-07]
+Invariant 1: provenance and admin permissions written inside the payload change nothing at all.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./tests/invariants/test_authority.py", line 38, in test_payload_cannot_claim_verification_or_permissions
+    self.assertEqual(decide_checked(self, mutated), policy.decide(case))
+                     ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "./tests/helpers.py", line 163, in decide_checked
+    test.assertNotIn("POLICY_ERROR", output["reason_codes"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'POLICY_ERROR' unexpectedly found in ['POLICY_ERROR']
+
+======================================================================
+FAIL: test_payload_cannot_claim_verification_or_permissions (tests.invariants.test_authority.Authority.test_payload_cannot_claim_verification_or_permissions) [AIR-08]
+Invariant 1: provenance and admin permissions written inside the payload change nothing at all.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./tests/invariants/test_authority.py", line 38, in test_payload_cannot_claim_verification_or_permissions
+    self.assertEqual(decide_checked(self, mutated), policy.decide(case))
+                     ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "./tests/helpers.py", line 163, in decide_checked
+    test.assertNotIn("POLICY_ERROR", output["reason_codes"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'POLICY_ERROR' unexpectedly found in ['POLICY_ERROR']
+
+======================================================================
+FAIL: test_undetected_injection_changes_nothing (tests.invariants.test_authority.Authority.test_undetected_injection_changes_nothing) [AIR-01]
+Invariant 1: an injection the detector misses leaves disposition, codes, actions and review flag unchanged.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./tests/invariants/test_authority.py", line 25, in test_undetected_injection_changes_nothing
+    output = decide_checked(self, append_to_free_text(case, DISGUISED_INJECTION))
+  File "./tests/helpers.py", line 163, in decide_checked
+    test.assertNotIn("POLICY_ERROR", output["reason_codes"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'POLICY_ERROR' unexpectedly found in ['POLICY_ERROR']
+
+======================================================================
+FAIL: test_undetected_injection_changes_nothing (tests.invariants.test_authority.Authority.test_undetected_injection_changes_nothing) [AIR-02]
+Invariant 1: an injection the detector misses leaves disposition, codes, actions and review flag unchanged.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./tests/invariants/test_authority.py", line 25, in test_undetected_injection_changes_nothing
+    output = decide_checked(self, append_to_free_text(case, DISGUISED_INJECTION))
+  File "./tests/helpers.py", line 163, in decide_checked
+    test.assertNotIn("POLICY_ERROR", output["reason_codes"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'POLICY_ERROR' unexpectedly found in ['POLICY_ERROR']
+
+======================================================================
+FAIL: test_undetected_injection_changes_nothing (tests.invariants.test_authority.Authority.test_undetected_injection_changes_nothing) [AIR-03]
+Invariant 1: an injection the detector misses leaves disposition, codes, actions and review flag unchanged.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./tests/invariants/test_authority.py", line 25, in test_undetected_injection_changes_nothing
+    output = decide_checked(self, append_to_free_text(case, DISGUISED_INJECTION))
+  File "./tests/helpers.py", line 163, in decide_checked
+    test.assertNotIn("POLICY_ERROR", output["reason_codes"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'POLICY_ERROR' unexpectedly found in ['POLICY_ERROR']
+
+======================================================================
+FAIL: test_undetected_injection_changes_nothing (tests.invariants.test_authority.Authority.test_undetected_injection_changes_nothing) [AIR-04]
+Invariant 1: an injection the detector misses leaves disposition, codes, actions and review flag unchanged.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./tests/invariants/test_authority.py", line 25, in test_undetected_injection_changes_nothing
+    output = decide_checked(self, append_to_free_text(case, DISGUISED_INJECTION))
+  File "./tests/helpers.py", line 163, in decide_checked
+    test.assertNotIn("POLICY_ERROR", output["reason_codes"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'POLICY_ERROR' unexpectedly found in ['POLICY_ERROR']
+
+======================================================================
+FAIL: test_undetected_injection_changes_nothing (tests.invariants.test_authority.Authority.test_undetected_injection_changes_nothing) [AIR-05]
+Invariant 1: an injection the detector misses leaves disposition, codes, actions and review flag unchanged.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./tests/invariants/test_authority.py", line 25, in test_undetected_injection_changes_nothing
+    output = decide_checked(self, append_to_free_text(case, DISGUISED_INJECTION))
+  File "./tests/helpers.py", line 163, in decide_checked
+    test.assertNotIn("POLICY_ERROR", output["reason_codes"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'POLICY_ERROR' unexpectedly found in ['POLICY_ERROR']
+
+======================================================================
+FAIL: test_undetected_injection_changes_nothing (tests.invariants.test_authority.Authority.test_undetected_injection_changes_nothing) [AIR-06]
+Invariant 1: an injection the detector misses leaves disposition, codes, actions and review flag unchanged.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./tests/invariants/test_authority.py", line 25, in test_undetected_injection_changes_nothing
+    output = decide_checked(self, append_to_free_text(case, DISGUISED_INJECTION))
+  File "./tests/helpers.py", line 163, in decide_checked
+    test.assertNotIn("POLICY_ERROR", output["reason_codes"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'POLICY_ERROR' unexpectedly found in ['POLICY_ERROR']
+
+======================================================================
+FAIL: test_undetected_injection_changes_nothing (tests.invariants.test_authority.Authority.test_undetected_injection_changes_nothing) [AIR-07]
+Invariant 1: an injection the detector misses leaves disposition, codes, actions and review flag unchanged.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./tests/invariants/test_authority.py", line 25, in test_undetected_injection_changes_nothing
+    output = decide_checked(self, append_to_free_text(case, DISGUISED_INJECTION))
+  File "./tests/helpers.py", line 163, in decide_checked
+    test.assertNotIn("POLICY_ERROR", output["reason_codes"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'POLICY_ERROR' unexpectedly found in ['POLICY_ERROR']
+
+======================================================================
+FAIL: test_undetected_injection_changes_nothing (tests.invariants.test_authority.Authority.test_undetected_injection_changes_nothing) [AIR-08]
+Invariant 1: an injection the detector misses leaves disposition, codes, actions and review flag unchanged.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./tests/invariants/test_authority.py", line 25, in test_undetected_injection_changes_nothing
+    output = decide_checked(self, append_to_free_text(case, DISGUISED_INJECTION))
+  File "./tests/helpers.py", line 163, in decide_checked
+    test.assertNotIn("POLICY_ERROR", output["reason_codes"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'POLICY_ERROR' unexpectedly found in ['POLICY_ERROR']
+
+======================================================================
+FAIL: test_missing_event_time_is_never_invented (tests.invariants.test_no_fabrication.NoFabrication.test_missing_event_time_is_never_invented) (case_id='AIR-01', event='e1')
+Invariant 2: with its declared time deleted, an event gets MISSING_OCCURRED_AT; receipt time is never substituted.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./tests/invariants/test_no_fabrication.py", line 15, in assert_not_invented
+    output = decide_checked(self, mutated)
+  File "./tests/helpers.py", line 163, in decide_checked
+    test.assertNotIn("POLICY_ERROR", output["reason_codes"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'POLICY_ERROR' unexpectedly found in ['POLICY_ERROR']
+
+======================================================================
+FAIL: test_missing_event_time_is_never_invented (tests.invariants.test_no_fabrication.NoFabrication.test_missing_event_time_is_never_invented) (case_id='AIR-02', event='e1')
+Invariant 2: with its declared time deleted, an event gets MISSING_OCCURRED_AT; receipt time is never substituted.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./tests/invariants/test_no_fabrication.py", line 15, in assert_not_invented
+    output = decide_checked(self, mutated)
+  File "./tests/helpers.py", line 163, in decide_checked
+    test.assertNotIn("POLICY_ERROR", output["reason_codes"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'POLICY_ERROR' unexpectedly found in ['POLICY_ERROR']
+
+======================================================================
+FAIL: test_missing_event_time_is_never_invented (tests.invariants.test_no_fabrication.NoFabrication.test_missing_event_time_is_never_invented) (case_id='AIR-02', event='e2')
+Invariant 2: with its declared time deleted, an event gets MISSING_OCCURRED_AT; receipt time is never substituted.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./tests/invariants/test_no_fabrication.py", line 15, in assert_not_invented
+    output = decide_checked(self, mutated)
+  File "./tests/helpers.py", line 163, in decide_checked
+    test.assertNotIn("POLICY_ERROR", output["reason_codes"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'POLICY_ERROR' unexpectedly found in ['POLICY_ERROR']
+
+======================================================================
+FAIL: test_missing_event_time_is_never_invented (tests.invariants.test_no_fabrication.NoFabrication.test_missing_event_time_is_never_invented) (case_id='AIR-03', event='e1')
+Invariant 2: with its declared time deleted, an event gets MISSING_OCCURRED_AT; receipt time is never substituted.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./tests/invariants/test_no_fabrication.py", line 15, in assert_not_invented
+    output = decide_checked(self, mutated)
+  File "./tests/helpers.py", line 163, in decide_checked
+    test.assertNotIn("POLICY_ERROR", output["reason_codes"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'POLICY_ERROR' unexpectedly found in ['POLICY_ERROR']
+
+======================================================================
+FAIL: test_missing_event_time_is_never_invented (tests.invariants.test_no_fabrication.NoFabrication.test_missing_event_time_is_never_invented) (case_id='AIR-03', event='e2')
+Invariant 2: with its declared time deleted, an event gets MISSING_OCCURRED_AT; receipt time is never substituted.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./tests/invariants/test_no_fabrication.py", line 15, in assert_not_invented
+    output = decide_checked(self, mutated)
+  File "./tests/helpers.py", line 163, in decide_checked
+    test.assertNotIn("POLICY_ERROR", output["reason_codes"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'POLICY_ERROR' unexpectedly found in ['POLICY_ERROR']
+
+======================================================================
+FAIL: test_missing_event_time_is_never_invented (tests.invariants.test_no_fabrication.NoFabrication.test_missing_event_time_is_never_invented) (case_id='AIR-04', event='e1')
+Invariant 2: with its declared time deleted, an event gets MISSING_OCCURRED_AT; receipt time is never substituted.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./tests/invariants/test_no_fabrication.py", line 15, in assert_not_invented
+    output = decide_checked(self, mutated)
+  File "./tests/helpers.py", line 163, in decide_checked
+    test.assertNotIn("POLICY_ERROR", output["reason_codes"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'POLICY_ERROR' unexpectedly found in ['POLICY_ERROR']
+
+======================================================================
+FAIL: test_missing_event_time_is_never_invented (tests.invariants.test_no_fabrication.NoFabrication.test_missing_event_time_is_never_invented) (case_id='AIR-05', event='e1')
+Invariant 2: with its declared time deleted, an event gets MISSING_OCCURRED_AT; receipt time is never substituted.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./tests/invariants/test_no_fabrication.py", line 15, in assert_not_invented
+    output = decide_checked(self, mutated)
+  File "./tests/helpers.py", line 163, in decide_checked
+    test.assertNotIn("POLICY_ERROR", output["reason_codes"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'POLICY_ERROR' unexpectedly found in ['POLICY_ERROR']
+
+======================================================================
+FAIL: test_missing_event_time_is_never_invented (tests.invariants.test_no_fabrication.NoFabrication.test_missing_event_time_is_never_invented) (case_id='AIR-06', event='e1')
+Invariant 2: with its declared time deleted, an event gets MISSING_OCCURRED_AT; receipt time is never substituted.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./tests/invariants/test_no_fabrication.py", line 15, in assert_not_invented
+    output = decide_checked(self, mutated)
+  File "./tests/helpers.py", line 163, in decide_checked
+    test.assertNotIn("POLICY_ERROR", output["reason_codes"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'POLICY_ERROR' unexpectedly found in ['POLICY_ERROR']
+
+======================================================================
+FAIL: test_missing_event_time_is_never_invented (tests.invariants.test_no_fabrication.NoFabrication.test_missing_event_time_is_never_invented) (case_id='AIR-06', event='e2')
+Invariant 2: with its declared time deleted, an event gets MISSING_OCCURRED_AT; receipt time is never substituted.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./tests/invariants/test_no_fabrication.py", line 15, in assert_not_invented
+    output = decide_checked(self, mutated)
+  File "./tests/helpers.py", line 163, in decide_checked
+    test.assertNotIn("POLICY_ERROR", output["reason_codes"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'POLICY_ERROR' unexpectedly found in ['POLICY_ERROR']
+
+======================================================================
+FAIL: test_missing_event_time_is_never_invented (tests.invariants.test_no_fabrication.NoFabrication.test_missing_event_time_is_never_invented) (case_id='AIR-06', event='e3')
+Invariant 2: with its declared time deleted, an event gets MISSING_OCCURRED_AT; receipt time is never substituted.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./tests/invariants/test_no_fabrication.py", line 15, in assert_not_invented
+    output = decide_checked(self, mutated)
+  File "./tests/helpers.py", line 163, in decide_checked
+    test.assertNotIn("POLICY_ERROR", output["reason_codes"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'POLICY_ERROR' unexpectedly found in ['POLICY_ERROR']
+
+======================================================================
+FAIL: test_missing_event_time_is_never_invented (tests.invariants.test_no_fabrication.NoFabrication.test_missing_event_time_is_never_invented) (case_id='AIR-07', event='e1')
+Invariant 2: with its declared time deleted, an event gets MISSING_OCCURRED_AT; receipt time is never substituted.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./tests/invariants/test_no_fabrication.py", line 15, in assert_not_invented
+    output = decide_checked(self, mutated)
+  File "./tests/helpers.py", line 163, in decide_checked
+    test.assertNotIn("POLICY_ERROR", output["reason_codes"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'POLICY_ERROR' unexpectedly found in ['POLICY_ERROR']
+
+======================================================================
+FAIL: test_missing_event_time_is_never_invented (tests.invariants.test_no_fabrication.NoFabrication.test_missing_event_time_is_never_invented) (case_id='AIR-07', event='e2')
+Invariant 2: with its declared time deleted, an event gets MISSING_OCCURRED_AT; receipt time is never substituted.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./tests/invariants/test_no_fabrication.py", line 15, in assert_not_invented
+    output = decide_checked(self, mutated)
+  File "./tests/helpers.py", line 163, in decide_checked
+    test.assertNotIn("POLICY_ERROR", output["reason_codes"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'POLICY_ERROR' unexpectedly found in ['POLICY_ERROR']
+
+======================================================================
+FAIL: test_missing_event_time_is_never_invented (tests.invariants.test_no_fabrication.NoFabrication.test_missing_event_time_is_never_invented) (case_id='AIR-08', event='e1')
+Invariant 2: with its declared time deleted, an event gets MISSING_OCCURRED_AT; receipt time is never substituted.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./tests/invariants/test_no_fabrication.py", line 15, in assert_not_invented
+    output = decide_checked(self, mutated)
+  File "./tests/helpers.py", line 163, in decide_checked
+    test.assertNotIn("POLICY_ERROR", output["reason_codes"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'POLICY_ERROR' unexpectedly found in ['POLICY_ERROR']
+
+======================================================================
+FAIL: test_missing_source_id_is_never_invented (tests.invariants.test_no_fabrication.NoFabrication.test_missing_source_id_is_never_invented) (case_id='AIR-01', event='e1')
+Invariant 2: with its declared source ID deleted, an event gets MISSING_SOURCE_EVENT_ID and is never accepted.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./tests/invariants/test_no_fabrication.py", line 15, in assert_not_invented
+    output = decide_checked(self, mutated)
+  File "./tests/helpers.py", line 163, in decide_checked
+    test.assertNotIn("POLICY_ERROR", output["reason_codes"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'POLICY_ERROR' unexpectedly found in ['POLICY_ERROR']
+
+======================================================================
+FAIL: test_missing_source_id_is_never_invented (tests.invariants.test_no_fabrication.NoFabrication.test_missing_source_id_is_never_invented) (case_id='AIR-02', event='e1')
+Invariant 2: with its declared source ID deleted, an event gets MISSING_SOURCE_EVENT_ID and is never accepted.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./tests/invariants/test_no_fabrication.py", line 15, in assert_not_invented
+    output = decide_checked(self, mutated)
+  File "./tests/helpers.py", line 163, in decide_checked
+    test.assertNotIn("POLICY_ERROR", output["reason_codes"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'POLICY_ERROR' unexpectedly found in ['POLICY_ERROR']
+
+======================================================================
+FAIL: test_missing_source_id_is_never_invented (tests.invariants.test_no_fabrication.NoFabrication.test_missing_source_id_is_never_invented) (case_id='AIR-02', event='e2')
+Invariant 2: with its declared source ID deleted, an event gets MISSING_SOURCE_EVENT_ID and is never accepted.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./tests/invariants/test_no_fabrication.py", line 15, in assert_not_invented
+    output = decide_checked(self, mutated)
+  File "./tests/helpers.py", line 163, in decide_checked
+    test.assertNotIn("POLICY_ERROR", output["reason_codes"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'POLICY_ERROR' unexpectedly found in ['POLICY_ERROR']
+
+======================================================================
+FAIL: test_missing_source_id_is_never_invented (tests.invariants.test_no_fabrication.NoFabrication.test_missing_source_id_is_never_invented) (case_id='AIR-03', event='e1')
+Invariant 2: with its declared source ID deleted, an event gets MISSING_SOURCE_EVENT_ID and is never accepted.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./tests/invariants/test_no_fabrication.py", line 15, in assert_not_invented
+    output = decide_checked(self, mutated)
+  File "./tests/helpers.py", line 163, in decide_checked
+    test.assertNotIn("POLICY_ERROR", output["reason_codes"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'POLICY_ERROR' unexpectedly found in ['POLICY_ERROR']
+
+======================================================================
+FAIL: test_missing_source_id_is_never_invented (tests.invariants.test_no_fabrication.NoFabrication.test_missing_source_id_is_never_invented) (case_id='AIR-03', event='e2')
+Invariant 2: with its declared source ID deleted, an event gets MISSING_SOURCE_EVENT_ID and is never accepted.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./tests/invariants/test_no_fabrication.py", line 15, in assert_not_invented
+    output = decide_checked(self, mutated)
+  File "./tests/helpers.py", line 163, in decide_checked
+    test.assertNotIn("POLICY_ERROR", output["reason_codes"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'POLICY_ERROR' unexpectedly found in ['POLICY_ERROR']
+
+======================================================================
+FAIL: test_missing_source_id_is_never_invented (tests.invariants.test_no_fabrication.NoFabrication.test_missing_source_id_is_never_invented) (case_id='AIR-04', event='e1')
+Invariant 2: with its declared source ID deleted, an event gets MISSING_SOURCE_EVENT_ID and is never accepted.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./tests/invariants/test_no_fabrication.py", line 15, in assert_not_invented
+    output = decide_checked(self, mutated)
+  File "./tests/helpers.py", line 163, in decide_checked
+    test.assertNotIn("POLICY_ERROR", output["reason_codes"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'POLICY_ERROR' unexpectedly found in ['POLICY_ERROR']
+
+======================================================================
+FAIL: test_missing_source_id_is_never_invented (tests.invariants.test_no_fabrication.NoFabrication.test_missing_source_id_is_never_invented) (case_id='AIR-05', event='e1')
+Invariant 2: with its declared source ID deleted, an event gets MISSING_SOURCE_EVENT_ID and is never accepted.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./tests/invariants/test_no_fabrication.py", line 15, in assert_not_invented
+    output = decide_checked(self, mutated)
+  File "./tests/helpers.py", line 163, in decide_checked
+    test.assertNotIn("POLICY_ERROR", output["reason_codes"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'POLICY_ERROR' unexpectedly found in ['POLICY_ERROR']
+
+======================================================================
+FAIL: test_missing_source_id_is_never_invented (tests.invariants.test_no_fabrication.NoFabrication.test_missing_source_id_is_never_invented) (case_id='AIR-06', event='e1')
+Invariant 2: with its declared source ID deleted, an event gets MISSING_SOURCE_EVENT_ID and is never accepted.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./tests/invariants/test_no_fabrication.py", line 15, in assert_not_invented
+    output = decide_checked(self, mutated)
+  File "./tests/helpers.py", line 163, in decide_checked
+    test.assertNotIn("POLICY_ERROR", output["reason_codes"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'POLICY_ERROR' unexpectedly found in ['POLICY_ERROR']
+
+======================================================================
+FAIL: test_missing_source_id_is_never_invented (tests.invariants.test_no_fabrication.NoFabrication.test_missing_source_id_is_never_invented) (case_id='AIR-06', event='e2')
+Invariant 2: with its declared source ID deleted, an event gets MISSING_SOURCE_EVENT_ID and is never accepted.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./tests/invariants/test_no_fabrication.py", line 15, in assert_not_invented
+    output = decide_checked(self, mutated)
+  File "./tests/helpers.py", line 163, in decide_checked
+    test.assertNotIn("POLICY_ERROR", output["reason_codes"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'POLICY_ERROR' unexpectedly found in ['POLICY_ERROR']
+
+======================================================================
+FAIL: test_missing_source_id_is_never_invented (tests.invariants.test_no_fabrication.NoFabrication.test_missing_source_id_is_never_invented) (case_id='AIR-06', event='e3')
+Invariant 2: with its declared source ID deleted, an event gets MISSING_SOURCE_EVENT_ID and is never accepted.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./tests/invariants/test_no_fabrication.py", line 15, in assert_not_invented
+    output = decide_checked(self, mutated)
+  File "./tests/helpers.py", line 163, in decide_checked
+    test.assertNotIn("POLICY_ERROR", output["reason_codes"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'POLICY_ERROR' unexpectedly found in ['POLICY_ERROR']
+
+======================================================================
+FAIL: test_missing_source_id_is_never_invented (tests.invariants.test_no_fabrication.NoFabrication.test_missing_source_id_is_never_invented) (case_id='AIR-07', event='e1')
+Invariant 2: with its declared source ID deleted, an event gets MISSING_SOURCE_EVENT_ID and is never accepted.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./tests/invariants/test_no_fabrication.py", line 15, in assert_not_invented
+    output = decide_checked(self, mutated)
+  File "./tests/helpers.py", line 163, in decide_checked
+    test.assertNotIn("POLICY_ERROR", output["reason_codes"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'POLICY_ERROR' unexpectedly found in ['POLICY_ERROR']
+
+======================================================================
+FAIL: test_missing_source_id_is_never_invented (tests.invariants.test_no_fabrication.NoFabrication.test_missing_source_id_is_never_invented) (case_id='AIR-07', event='e2')
+Invariant 2: with its declared source ID deleted, an event gets MISSING_SOURCE_EVENT_ID and is never accepted.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./tests/invariants/test_no_fabrication.py", line 15, in assert_not_invented
+    output = decide_checked(self, mutated)
+  File "./tests/helpers.py", line 163, in decide_checked
+    test.assertNotIn("POLICY_ERROR", output["reason_codes"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'POLICY_ERROR' unexpectedly found in ['POLICY_ERROR']
+
+======================================================================
+FAIL: test_missing_source_id_is_never_invented (tests.invariants.test_no_fabrication.NoFabrication.test_missing_source_id_is_never_invented) (case_id='AIR-08', event='e1')
+Invariant 2: with its declared source ID deleted, an event gets MISSING_SOURCE_EVENT_ID and is never accepted.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./tests/invariants/test_no_fabrication.py", line 15, in assert_not_invented
+    output = decide_checked(self, mutated)
+  File "./tests/helpers.py", line 163, in decide_checked
+    test.assertNotIn("POLICY_ERROR", output["reason_codes"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'POLICY_ERROR' unexpectedly found in ['POLICY_ERROR']
+
+======================================================================
+FAIL: test_diagnosis_survives_redaction (tests.invariants.test_no_leaks.NoLeaks.test_diagnosis_survives_redaction)
+Invariant 3: AIR-05 keeps its diagnosis ("HTTP 401 unauthorised") while the pasted key is masked and absent.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./tests/invariants/test_no_leaks.py", line 48, in test_diagnosis_survives_redaction
+    self.assertIn("HTTP 401 unauthorised", output["summary"])
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'HTTP 401 unauthorised' not found in 'QUARANTINE; no detail is reported for this case.'
+
+======================================================================
+FAIL: test_planted_key_in_id_header_and_dict_key_never_leaks (tests.invariants.test_no_leaks.NoLeaks.test_planted_key_in_id_header_and_dict_key_never_leaks) [AIR-01]
+Invariant 3: the fake key planted in an ID field, a header value and a dict key is detected and never leaks.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./tests/invariants/test_no_leaks.py", line 40, in test_planted_key_in_id_header_and_dict_key_never_leaks
+    output, logs = self.decide_with_logs(mutated)
+                   ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "./tests/invariants/test_no_leaks.py", line 15, in decide_with_logs
+    output = decide_checked(self, case)
+  File "./tests/helpers.py", line 163, in decide_checked
+    test.assertNotIn("POLICY_ERROR", output["reason_codes"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'POLICY_ERROR' unexpectedly found in ['POLICY_ERROR']
+
+======================================================================
+FAIL: test_planted_key_in_id_header_and_dict_key_never_leaks (tests.invariants.test_no_leaks.NoLeaks.test_planted_key_in_id_header_and_dict_key_never_leaks) [AIR-02]
+Invariant 3: the fake key planted in an ID field, a header value and a dict key is detected and never leaks.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./tests/invariants/test_no_leaks.py", line 40, in test_planted_key_in_id_header_and_dict_key_never_leaks
+    output, logs = self.decide_with_logs(mutated)
+                   ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "./tests/invariants/test_no_leaks.py", line 15, in decide_with_logs
+    output = decide_checked(self, case)
+  File "./tests/helpers.py", line 163, in decide_checked
+    test.assertNotIn("POLICY_ERROR", output["reason_codes"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'POLICY_ERROR' unexpectedly found in ['POLICY_ERROR']
+
+======================================================================
+FAIL: test_planted_key_in_id_header_and_dict_key_never_leaks (tests.invariants.test_no_leaks.NoLeaks.test_planted_key_in_id_header_and_dict_key_never_leaks) [AIR-03]
+Invariant 3: the fake key planted in an ID field, a header value and a dict key is detected and never leaks.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./tests/invariants/test_no_leaks.py", line 40, in test_planted_key_in_id_header_and_dict_key_never_leaks
+    output, logs = self.decide_with_logs(mutated)
+                   ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "./tests/invariants/test_no_leaks.py", line 15, in decide_with_logs
+    output = decide_checked(self, case)
+  File "./tests/helpers.py", line 163, in decide_checked
+    test.assertNotIn("POLICY_ERROR", output["reason_codes"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'POLICY_ERROR' unexpectedly found in ['POLICY_ERROR']
+
+======================================================================
+FAIL: test_planted_key_in_id_header_and_dict_key_never_leaks (tests.invariants.test_no_leaks.NoLeaks.test_planted_key_in_id_header_and_dict_key_never_leaks) [AIR-04]
+Invariant 3: the fake key planted in an ID field, a header value and a dict key is detected and never leaks.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./tests/invariants/test_no_leaks.py", line 40, in test_planted_key_in_id_header_and_dict_key_never_leaks
+    output, logs = self.decide_with_logs(mutated)
+                   ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "./tests/invariants/test_no_leaks.py", line 15, in decide_with_logs
+    output = decide_checked(self, case)
+  File "./tests/helpers.py", line 163, in decide_checked
+    test.assertNotIn("POLICY_ERROR", output["reason_codes"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'POLICY_ERROR' unexpectedly found in ['POLICY_ERROR']
+
+======================================================================
+FAIL: test_planted_key_in_id_header_and_dict_key_never_leaks (tests.invariants.test_no_leaks.NoLeaks.test_planted_key_in_id_header_and_dict_key_never_leaks) [AIR-05]
+Invariant 3: the fake key planted in an ID field, a header value and a dict key is detected and never leaks.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./tests/invariants/test_no_leaks.py", line 40, in test_planted_key_in_id_header_and_dict_key_never_leaks
+    output, logs = self.decide_with_logs(mutated)
+                   ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "./tests/invariants/test_no_leaks.py", line 15, in decide_with_logs
+    output = decide_checked(self, case)
+  File "./tests/helpers.py", line 163, in decide_checked
+    test.assertNotIn("POLICY_ERROR", output["reason_codes"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'POLICY_ERROR' unexpectedly found in ['POLICY_ERROR']
+
+======================================================================
+FAIL: test_planted_key_in_id_header_and_dict_key_never_leaks (tests.invariants.test_no_leaks.NoLeaks.test_planted_key_in_id_header_and_dict_key_never_leaks) [AIR-06]
+Invariant 3: the fake key planted in an ID field, a header value and a dict key is detected and never leaks.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./tests/invariants/test_no_leaks.py", line 40, in test_planted_key_in_id_header_and_dict_key_never_leaks
+    output, logs = self.decide_with_logs(mutated)
+                   ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "./tests/invariants/test_no_leaks.py", line 15, in decide_with_logs
+    output = decide_checked(self, case)
+  File "./tests/helpers.py", line 163, in decide_checked
+    test.assertNotIn("POLICY_ERROR", output["reason_codes"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'POLICY_ERROR' unexpectedly found in ['POLICY_ERROR']
+
+======================================================================
+FAIL: test_planted_key_in_id_header_and_dict_key_never_leaks (tests.invariants.test_no_leaks.NoLeaks.test_planted_key_in_id_header_and_dict_key_never_leaks) [AIR-07]
+Invariant 3: the fake key planted in an ID field, a header value and a dict key is detected and never leaks.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./tests/invariants/test_no_leaks.py", line 40, in test_planted_key_in_id_header_and_dict_key_never_leaks
+    output, logs = self.decide_with_logs(mutated)
+                   ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "./tests/invariants/test_no_leaks.py", line 15, in decide_with_logs
+    output = decide_checked(self, case)
+  File "./tests/helpers.py", line 163, in decide_checked
+    test.assertNotIn("POLICY_ERROR", output["reason_codes"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'POLICY_ERROR' unexpectedly found in ['POLICY_ERROR']
+
+======================================================================
+FAIL: test_planted_key_in_id_header_and_dict_key_never_leaks (tests.invariants.test_no_leaks.NoLeaks.test_planted_key_in_id_header_and_dict_key_never_leaks) [AIR-08]
+Invariant 3: the fake key planted in an ID field, a header value and a dict key is detected and never leaks.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./tests/invariants/test_no_leaks.py", line 40, in test_planted_key_in_id_header_and_dict_key_never_leaks
+    output, logs = self.decide_with_logs(mutated)
+                   ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "./tests/invariants/test_no_leaks.py", line 15, in decide_with_logs
+    output = decide_checked(self, case)
+  File "./tests/helpers.py", line 163, in decide_checked
+    test.assertNotIn("POLICY_ERROR", output["reason_codes"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'POLICY_ERROR' unexpectedly found in ['POLICY_ERROR']
+
+======================================================================
+FAIL: test_planted_values_in_free_text_never_leak (tests.invariants.test_no_leaks.NoLeaks.test_planted_values_in_free_text_never_leak) [AIR-01]
+Invariant 3: a fake key and phone planted in every free-text field are detected and appear in neither output nor logs.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./tests/invariants/test_no_leaks.py", line 22, in test_planted_values_in_free_text_never_leak
+    output, logs = self.decide_with_logs(append_to_free_text(case, f" token {FAKE_KEY} call {FAKE_PHONE}"))
+                   ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "./tests/invariants/test_no_leaks.py", line 15, in decide_with_logs
+    output = decide_checked(self, case)
+  File "./tests/helpers.py", line 163, in decide_checked
+    test.assertNotIn("POLICY_ERROR", output["reason_codes"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'POLICY_ERROR' unexpectedly found in ['POLICY_ERROR']
+
+======================================================================
+FAIL: test_planted_values_in_free_text_never_leak (tests.invariants.test_no_leaks.NoLeaks.test_planted_values_in_free_text_never_leak) [AIR-02]
+Invariant 3: a fake key and phone planted in every free-text field are detected and appear in neither output nor logs.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./tests/invariants/test_no_leaks.py", line 22, in test_planted_values_in_free_text_never_leak
+    output, logs = self.decide_with_logs(append_to_free_text(case, f" token {FAKE_KEY} call {FAKE_PHONE}"))
+                   ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "./tests/invariants/test_no_leaks.py", line 15, in decide_with_logs
+    output = decide_checked(self, case)
+  File "./tests/helpers.py", line 163, in decide_checked
+    test.assertNotIn("POLICY_ERROR", output["reason_codes"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'POLICY_ERROR' unexpectedly found in ['POLICY_ERROR']
+
+======================================================================
+FAIL: test_planted_values_in_free_text_never_leak (tests.invariants.test_no_leaks.NoLeaks.test_planted_values_in_free_text_never_leak) [AIR-03]
+Invariant 3: a fake key and phone planted in every free-text field are detected and appear in neither output nor logs.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./tests/invariants/test_no_leaks.py", line 22, in test_planted_values_in_free_text_never_leak
+    output, logs = self.decide_with_logs(append_to_free_text(case, f" token {FAKE_KEY} call {FAKE_PHONE}"))
+                   ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "./tests/invariants/test_no_leaks.py", line 15, in decide_with_logs
+    output = decide_checked(self, case)
+  File "./tests/helpers.py", line 163, in decide_checked
+    test.assertNotIn("POLICY_ERROR", output["reason_codes"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'POLICY_ERROR' unexpectedly found in ['POLICY_ERROR']
+
+======================================================================
+FAIL: test_planted_values_in_free_text_never_leak (tests.invariants.test_no_leaks.NoLeaks.test_planted_values_in_free_text_never_leak) [AIR-04]
+Invariant 3: a fake key and phone planted in every free-text field are detected and appear in neither output nor logs.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./tests/invariants/test_no_leaks.py", line 22, in test_planted_values_in_free_text_never_leak
+    output, logs = self.decide_with_logs(append_to_free_text(case, f" token {FAKE_KEY} call {FAKE_PHONE}"))
+                   ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "./tests/invariants/test_no_leaks.py", line 15, in decide_with_logs
+    output = decide_checked(self, case)
+  File "./tests/helpers.py", line 163, in decide_checked
+    test.assertNotIn("POLICY_ERROR", output["reason_codes"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'POLICY_ERROR' unexpectedly found in ['POLICY_ERROR']
+
+======================================================================
+FAIL: test_planted_values_in_free_text_never_leak (tests.invariants.test_no_leaks.NoLeaks.test_planted_values_in_free_text_never_leak) [AIR-05]
+Invariant 3: a fake key and phone planted in every free-text field are detected and appear in neither output nor logs.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./tests/invariants/test_no_leaks.py", line 22, in test_planted_values_in_free_text_never_leak
+    output, logs = self.decide_with_logs(append_to_free_text(case, f" token {FAKE_KEY} call {FAKE_PHONE}"))
+                   ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "./tests/invariants/test_no_leaks.py", line 15, in decide_with_logs
+    output = decide_checked(self, case)
+  File "./tests/helpers.py", line 163, in decide_checked
+    test.assertNotIn("POLICY_ERROR", output["reason_codes"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'POLICY_ERROR' unexpectedly found in ['POLICY_ERROR']
+
+======================================================================
+FAIL: test_planted_values_in_free_text_never_leak (tests.invariants.test_no_leaks.NoLeaks.test_planted_values_in_free_text_never_leak) [AIR-06]
+Invariant 3: a fake key and phone planted in every free-text field are detected and appear in neither output nor logs.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./tests/invariants/test_no_leaks.py", line 22, in test_planted_values_in_free_text_never_leak
+    output, logs = self.decide_with_logs(append_to_free_text(case, f" token {FAKE_KEY} call {FAKE_PHONE}"))
+                   ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "./tests/invariants/test_no_leaks.py", line 15, in decide_with_logs
+    output = decide_checked(self, case)
+  File "./tests/helpers.py", line 163, in decide_checked
+    test.assertNotIn("POLICY_ERROR", output["reason_codes"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'POLICY_ERROR' unexpectedly found in ['POLICY_ERROR']
+
+======================================================================
+FAIL: test_planted_values_in_free_text_never_leak (tests.invariants.test_no_leaks.NoLeaks.test_planted_values_in_free_text_never_leak) [AIR-07]
+Invariant 3: a fake key and phone planted in every free-text field are detected and appear in neither output nor logs.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./tests/invariants/test_no_leaks.py", line 22, in test_planted_values_in_free_text_never_leak
+    output, logs = self.decide_with_logs(append_to_free_text(case, f" token {FAKE_KEY} call {FAKE_PHONE}"))
+                   ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "./tests/invariants/test_no_leaks.py", line 15, in decide_with_logs
+    output = decide_checked(self, case)
+  File "./tests/helpers.py", line 163, in decide_checked
+    test.assertNotIn("POLICY_ERROR", output["reason_codes"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'POLICY_ERROR' unexpectedly found in ['POLICY_ERROR']
+
+======================================================================
+FAIL: test_planted_values_in_free_text_never_leak (tests.invariants.test_no_leaks.NoLeaks.test_planted_values_in_free_text_never_leak) [AIR-08]
+Invariant 3: a fake key and phone planted in every free-text field are detected and appear in neither output nor logs.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./tests/invariants/test_no_leaks.py", line 22, in test_planted_values_in_free_text_never_leak
+    output, logs = self.decide_with_logs(append_to_free_text(case, f" token {FAKE_KEY} call {FAKE_PHONE}"))
+                   ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "./tests/invariants/test_no_leaks.py", line 15, in decide_with_logs
+    output = decide_checked(self, case)
+  File "./tests/helpers.py", line 163, in decide_checked
+    test.assertNotIn("POLICY_ERROR", output["reason_codes"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'POLICY_ERROR' unexpectedly found in ['POLICY_ERROR']
+
+======================================================================
+FAIL: test_broken_state_chain_is_a_conflict (tests.invariants.test_no_silent_resolve.NoSilentResolve.test_broken_state_chain_is_a_conflict)
+Invariant 4: if AIR-06's previous-state chain breaks, the current state is unconfirmed and a human reviews it.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./tests/invariants/test_no_silent_resolve.py", line 27, in test_broken_state_chain_is_a_conflict
+    output = decide_checked(self, mutated)
+  File "./tests/helpers.py", line 163, in decide_checked
+    test.assertNotIn("POLICY_ERROR", output["reason_codes"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'POLICY_ERROR' unexpectedly found in ['POLICY_ERROR']
+
+======================================================================
+FAIL: test_file_order_never_changes_the_decision (tests.invariants.test_no_silent_resolve.NoSilentResolve.test_file_order_never_changes_the_decision)
+Invariant 4: every ordering of AIR-03's and AIR-06's events gives the same decision and observed_state.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./tests/invariants/test_no_silent_resolve.py", line 15, in test_file_order_never_changes_the_decision
+    self.assertEqual(baseline["observed_state"], EXPECTED[case_id]["observed_state"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: None != 'Reopened'
+
+======================================================================
+FAIL: test_reused_message_id_is_not_deduplicated (tests.invariants.test_no_silent_resolve.NoSilentResolve.test_reused_message_id_is_not_deduplicated)
+Invariant 4: AIR-06's MessageId reused with different content is an ID collision, never a silent duplicate.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./tests/invariants/test_no_silent_resolve.py", line 37, in test_reused_message_id_is_not_deduplicated
+    output = decide_checked(self, mutated)
+  File "./tests/helpers.py", line 163, in decide_checked
+    test.assertNotIn("POLICY_ERROR", output["reason_codes"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'POLICY_ERROR' unexpectedly found in ['POLICY_ERROR']
+
+======================================================================
+FAIL: test_each_case_matches_expected (tests.test_policy.FixtureCases.test_each_case_matches_expected) [AIR-01]
+All eight cases give their expected decision and pass every harness check (all four invariants).
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./tests/test_policy.py", line 22, in test_each_case_matches_expected
+    self.assertEqual(check(case, policy.decide(case), EXPECTED[case_id]), [])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: ['POLICY_ERROR present', 'disposition diff[409 chars]ed)'] != []
+
+First list contains 10 additional elements.
+First extra element 0:
+'POLICY_ERROR present'
+
++ []
+- ['POLICY_ERROR present',
+-  'disposition differs from expected',
+-  'reason_codes differs from expected',
+-  'safe_next_action differs from expected',
+-  'human_review_required differs from expected',
+-  'redaction_requirements differs from expected',
+-  'notes_on_uncertainty differs from expected',
+-  'missing evidence ref e1:provenance.verified (observed)',
+-  'missing evidence ref e1:payload.headers[name=Date] (asserted)',
+-  'missing evidence ref e1:payload.body (asserted)']
+
+======================================================================
+FAIL: test_each_case_matches_expected (tests.test_policy.FixtureCases.test_each_case_matches_expected) [AIR-02]
+All eight cases give their expected decision and pass every harness check (all four invariants).
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./tests/test_policy.py", line 22, in test_each_case_matches_expected
+    self.assertEqual(check(case, policy.decide(case), EXPECTED[case_id]), [])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: ['POLICY_ERROR present', 'disposition diff[567 chars]ed)'] != []
+
+First list contains 12 additional elements.
+First extra element 0:
+'POLICY_ERROR present'
+
+Diff is 655 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_each_case_matches_expected (tests.test_policy.FixtureCases.test_each_case_matches_expected) [AIR-03]
+All eight cases give their expected decision and pass every harness check (all four invariants).
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./tests/test_policy.py", line 22, in test_each_case_matches_expected
+    self.assertEqual(check(case, policy.decide(case), EXPECTED[case_id]), [])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: ['POLICY_ERROR present', 'disposition diff[552 chars]ed)'] != []
+
+First list contains 12 additional elements.
+First extra element 0:
+'POLICY_ERROR present'
+
++ []
+- ['POLICY_ERROR present',
+-  'disposition differs from expected',
+-  'reason_codes differs from expected',
+-  'safe_next_action differs from expected',
+-  'observed_state differs from expected',
+-  'redaction_requirements differs from expected',
+-  'notes_on_uncertainty differs from expected',
+-  'missing evidence ref e1:payload.body.timestamp (observed)',
+-  'missing evidence ref e2:payload.body.timestamp (observed)',
+-  'missing evidence ref e1:payload.body.changelog (observed)',
+-  'missing evidence ref e2:payload.body.changelog (observed)',
+-  'missing evidence ref e2:payload.headers.X-Atlassian-Webhook-Retry (asserted)']
+
+======================================================================
+FAIL: test_each_case_matches_expected (tests.test_policy.FixtureCases.test_each_case_matches_expected) [AIR-04]
+All eight cases give their expected decision and pass every harness check (all four invariants).
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./tests/test_policy.py", line 22, in test_each_case_matches_expected
+    self.assertEqual(check(case, policy.decide(case), EXPECTED[case_id]), [])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: ['POLICY_ERROR present', 'disposition diff[355 chars]ed)'] != []
+
+First list contains 9 additional elements.
+First extra element 0:
+'POLICY_ERROR present'
+
++ []
+- ['POLICY_ERROR present',
+-  'disposition differs from expected',
+-  'reason_codes differs from expected',
+-  'safe_next_action differs from expected',
+-  'additional_actions differs from expected',
+-  'redaction_requirements differs from expected',
+-  'notes_on_uncertainty differs from expected',
+-  'missing evidence ref e1:provenance.verified (observed)',
+-  'missing evidence ref e1:payload.ticket.description (asserted)']
+
+======================================================================
+FAIL: test_each_case_matches_expected (tests.test_policy.FixtureCases.test_each_case_matches_expected) [AIR-05]
+All eight cases give their expected decision and pass every harness check (all four invariants).
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./tests/test_policy.py", line 22, in test_each_case_matches_expected
+    self.assertEqual(check(case, policy.decide(case), EXPECTED[case_id]), [])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: ['POLICY_ERROR present', 'disposition diff[411 chars]ed)'] != []
+
+First list contains 10 additional elements.
+First extra element 0:
+'POLICY_ERROR present'
+
++ []
+- ['POLICY_ERROR present',
+-  'disposition differs from expected',
+-  'reason_codes differs from expected',
+-  'safe_next_action differs from expected',
+-  'additional_actions differs from expected',
+-  'redaction_requirements differs from expected',
+-  'notes_on_uncertainty differs from expected',
+-  'missing evidence ref e1:provenance.verified (observed)',
+-  'missing evidence ref e1:payload.LastModifiedDate (observed)',
+-  'missing evidence ref e1:payload.Description (asserted)']
+
+======================================================================
+FAIL: test_each_case_matches_expected (tests.test_policy.FixtureCases.test_each_case_matches_expected) [AIR-06]
+All eight cases give their expected decision and pass every harness check (all four invariants).
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./tests/test_policy.py", line 22, in test_each_case_matches_expected
+    self.assertEqual(check(case, policy.decide(case), EXPECTED[case_id]), [])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: ['POLICY_ERROR present', 'disposition diff[598 chars]ed)'] != []
+
+First list contains 12 additional elements.
+First extra element 0:
+'POLICY_ERROR present'
+
+Diff is 686 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_each_case_matches_expected (tests.test_policy.FixtureCases.test_each_case_matches_expected) [AIR-07]
+All eight cases give their expected decision and pass every harness check (all four invariants).
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./tests/test_policy.py", line 22, in test_each_case_matches_expected
+    self.assertEqual(check(case, policy.decide(case), EXPECTED[case_id]), [])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: ['POLICY_ERROR present', 'disposition diff[481 chars]ed)'] != []
+
+First list contains 11 additional elements.
+First extra element 0:
+'POLICY_ERROR present'
+
++ []
+- ['POLICY_ERROR present',
+-  'disposition differs from expected',
+-  'reason_codes differs from expected',
+-  'safe_next_action differs from expected',
+-  'additional_actions differs from expected',
+-  'redaction_requirements differs from expected',
+-  'notes_on_uncertainty differs from expected',
+-  'missing evidence ref e1:payload.body.timestamp (observed)',
+-  'missing evidence ref e2:payload.headers[name=Date] (asserted)',
+-  'missing evidence ref e1:payload.body.issue.fields.summary (asserted)',
+-  'missing evidence ref e2:payload.body (asserted)']
+
+======================================================================
+FAIL: test_each_case_matches_expected (tests.test_policy.FixtureCases.test_each_case_matches_expected) [AIR-08]
+All eight cases give their expected decision and pass every harness check (all four invariants).
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./tests/test_policy.py", line 22, in test_each_case_matches_expected
+    self.assertEqual(check(case, policy.decide(case), EXPECTED[case_id]), [])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: ['POLICY_ERROR present', 'reason_codes dif[297 chars]ed)'] != []
+
+First list contains 7 additional elements.
+First extra element 0:
+'POLICY_ERROR present'
+
++ []
+- ['POLICY_ERROR present',
+-  'reason_codes differs from expected',
+-  'redaction_requirements differs from expected',
+-  'notes_on_uncertainty differs from expected',
+-  'missing evidence ref e1:provenance.verified (observed)',
+-  'missing evidence ref e1:provenance.method (observed)',
+-  'missing evidence ref e1:payload.headers.X-Airosea-Timestamp (asserted)']
+
+======================================================================
+FAIL: test_each_defect_alone_quarantines (tests.variants.test_quarantine_variants.QuarantineVariants.test_each_defect_alone_quarantines) [no signature]
+Invariant 2: each AIR-08 defect on its own still quarantines with its reason code and a single action.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./tests/variants/test_quarantine_variants.py", line 47, in test_each_defect_alone_quarantines
+    output = decide_checked(self, case)
+  File "./tests/helpers.py", line 163, in decide_checked
+    test.assertNotIn("POLICY_ERROR", output["reason_codes"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'POLICY_ERROR' unexpectedly found in ['POLICY_ERROR']
+
+======================================================================
+FAIL: test_each_defect_alone_quarantines (tests.variants.test_quarantine_variants.QuarantineVariants.test_each_defect_alone_quarantines) [wrong method]
+Invariant 2: each AIR-08 defect on its own still quarantines with its reason code and a single action.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./tests/variants/test_quarantine_variants.py", line 47, in test_each_defect_alone_quarantines
+    output = decide_checked(self, case)
+  File "./tests/helpers.py", line 163, in decide_checked
+    test.assertNotIn("POLICY_ERROR", output["reason_codes"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'POLICY_ERROR' unexpectedly found in ['POLICY_ERROR']
+
+======================================================================
+FAIL: test_each_defect_alone_quarantines (tests.variants.test_quarantine_variants.QuarantineVariants.test_each_defect_alone_quarantines) [no identity]
+Invariant 2: each AIR-08 defect on its own still quarantines with its reason code and a single action.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./tests/variants/test_quarantine_variants.py", line 47, in test_each_defect_alone_quarantines
+    output = decide_checked(self, case)
+  File "./tests/helpers.py", line 163, in decide_checked
+    test.assertNotIn("POLICY_ERROR", output["reason_codes"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'POLICY_ERROR' unexpectedly found in ['POLICY_ERROR']
+
+======================================================================
+FAIL: test_each_defect_alone_quarantines (tests.variants.test_quarantine_variants.QuarantineVariants.test_each_defect_alone_quarantines) [impossible date]
+Invariant 2: each AIR-08 defect on its own still quarantines with its reason code and a single action.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./tests/variants/test_quarantine_variants.py", line 47, in test_each_defect_alone_quarantines
+    output = decide_checked(self, case)
+  File "./tests/helpers.py", line 163, in decide_checked
+    test.assertNotIn("POLICY_ERROR", output["reason_codes"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'POLICY_ERROR' unexpectedly found in ['POLICY_ERROR']
+
+======================================================================
+FAIL: test_each_defect_alone_quarantines (tests.variants.test_quarantine_variants.QuarantineVariants.test_each_defect_alone_quarantines) [no timezone]
+Invariant 2: each AIR-08 defect on its own still quarantines with its reason code and a single action.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./tests/variants/test_quarantine_variants.py", line 47, in test_each_defect_alone_quarantines
+    output = decide_checked(self, case)
+  File "./tests/helpers.py", line 163, in decide_checked
+    test.assertNotIn("POLICY_ERROR", output["reason_codes"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'POLICY_ERROR' unexpectedly found in ['POLICY_ERROR']
+
+======================================================================
+FAIL: test_each_defect_alone_quarantines (tests.variants.test_quarantine_variants.QuarantineVariants.test_each_defect_alone_quarantines) [no timestamp]
+Invariant 2: each AIR-08 defect on its own still quarantines with its reason code and a single action.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./tests/variants/test_quarantine_variants.py", line 47, in test_each_defect_alone_quarantines
+    output = decide_checked(self, case)
+  File "./tests/helpers.py", line 163, in decide_checked
+    test.assertNotIn("POLICY_ERROR", output["reason_codes"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'POLICY_ERROR' unexpectedly found in ['POLICY_ERROR']
+
+======================================================================
+FAIL: test_each_defect_alone_quarantines (tests.variants.test_quarantine_variants.QuarantineVariants.test_each_defect_alone_quarantines) [truncated body]
+Invariant 2: each AIR-08 defect on its own still quarantines with its reason code and a single action.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./tests/variants/test_quarantine_variants.py", line 47, in test_each_defect_alone_quarantines
+    output = decide_checked(self, case)
+  File "./tests/helpers.py", line 163, in decide_checked
+    test.assertNotIn("POLICY_ERROR", output["reason_codes"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'POLICY_ERROR' unexpectedly found in ['POLICY_ERROR']
+
+======================================================================
+FAIL: test_repaired_rollback_request_is_never_accepted (tests.variants.test_quarantine_variants.QuarantineVariants.test_repaired_rollback_request_is_never_accepted)
+Invariant 1: a properly signed fleet-wide rollback request is NEEDS_REVIEW with UNSOLICITED_ACTION_REQUEST, never ACCEPT.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./tests/variants/test_quarantine_variants.py", line 54, in test_repaired_rollback_request_is_never_accepted
+    output = decide_checked(self, repaired_air08())
+  File "./tests/helpers.py", line 163, in decide_checked
+    test.assertNotIn("POLICY_ERROR", output["reason_codes"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'POLICY_ERROR' unexpectedly found in ['POLICY_ERROR']
+
+----------------------------------------------------------------------
+Ran 22 tests in 0.086s
+
+FAILED (failures=95)
+PASS 6 / FAIL 16 / SKIP 0
